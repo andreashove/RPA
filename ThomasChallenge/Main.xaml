@@ -82,9 +82,10 @@
       <Variable x:TypeArguments="x:String" Name="stringChosenDate" />
       <Variable x:TypeArguments="ui:GenericValue" Name="message" />
       <Variable x:TypeArguments="x:String" Default="andreas.hove@capgemini.com" Name="recipient" />
+      <Variable x:TypeArguments="x:Boolean" Name="hasError" />
     </Flowchart.Variables>
     <Flowchart.StartNode>
-      <FlowStep x:Name="__ReferenceID11" sap2010:WorkflowViewState.IdRef="FlowStep_39">
+      <FlowStep x:Name="__ReferenceID10" sap2010:WorkflowViewState.IdRef="FlowStep_39">
         <Flowchart DisplayName="Get date from user" sap2010:WorkflowViewState.IdRef="Flowchart_2">
           <Flowchart.StartNode>
             <FlowStep x:Name="__ReferenceID0" sap2010:WorkflowViewState.IdRef="FlowStep_37">
@@ -148,296 +149,289 @@
                   <ActivityAction.Argument>
                     <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
                   </ActivityAction.Argument>
-                  <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_3">
-                    <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_20">
-                      <ui:ExtractData NextLinkSelector="{x:Null}" ContinueOnError="False" DataTable="[prices]" DelayBetweenPagesMS="300" DisplayName="Extract prices from table" ExtractMetadata="&lt;extract&gt;&lt;column exact='1' name='PlusPrices' attr='text'&gt;&lt;webctrl tag='tbody' class='ng-scope'/&gt;&lt;webctrl tag='tr' class='ng-scope' idx='1'/&gt;&lt;webctrl tag='td'/&gt;&lt;webctrl tag='span' class='ng-scope' idx='1'/&gt;&lt;webctrl tag='span' class='ng-scope ng-binding' idx='1'/&gt;&lt;/column&gt;&lt;/extract&gt;" sap2010:WorkflowViewState.IdRef="ExtractData_5" MaxNumberOfResults="100">
-                        <ui:ExtractData.Target>
-                          <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="2c1fabb4464f47e1e1b1cba95bd3ef26" Selector="&lt;webctrl id='bookOutwardFlight' tag='TABLE' /&gt;" WaitForReady="COMPLETE" />
-                        </ui:ExtractData.Target>
-                      </ui:ExtractData>
+                  <Sequence sap2010:WorkflowViewState.IdRef="Sequence_42">
+                    <Assign sap2010:WorkflowViewState.IdRef="Assign_33">
+                      <Assign.To>
+                        <OutArgument x:TypeArguments="x:Boolean">[hasError]</OutArgument>
+                      </Assign.To>
+                      <Assign.Value>
+                        <InArgument x:TypeArguments="x:Boolean">False</InArgument>
+                      </Assign.Value>
+                    </Assign>
+                    <Sequence sap2010:WorkflowViewState.IdRef="Sequence_40">
+                      <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_3">
+                        <ui:ExtractData NextLinkSelector="{x:Null}" ContinueOnError="False" DataTable="[prices]" DelayBetweenPagesMS="300" DisplayName="Extract prices from table" ExtractMetadata="&lt;extract&gt;&lt;column exact='1' name='PlusPrices' attr='text'&gt;&lt;webctrl tag='tbody' class='ng-scope'/&gt;&lt;webctrl tag='tr' class='ng-scope' idx='1'/&gt;&lt;webctrl tag='td'/&gt;&lt;webctrl tag='span' class='ng-scope' idx='1'/&gt;&lt;webctrl tag='span' class='ng-scope ng-binding' idx='1'/&gt;&lt;/column&gt;&lt;/extract&gt;" sap2010:WorkflowViewState.IdRef="ExtractData_5" MaxNumberOfResults="100">
+                          <ui:ExtractData.Target>
+                            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="2c1fabb4464f47e1e1b1cba95bd3ef26" Selector="&lt;webctrl id='bookOutwardFlight' tag='TABLE' /&gt;" WaitForReady="COMPLETE" />
+                          </ui:ExtractData.Target>
+                        </ui:ExtractData>
+                        <ui:ExtractData NextLinkSelector="{x:Null}" ContinueOnError="False" DataTable="[timestamps]" DelayBetweenPagesMS="300" DisplayName="Extract timestamps from table" ExtractMetadata="&lt;extract&gt;&lt;column exact='1' name='Column1' attr='text'&gt;&lt;webctrl tag='tbody' class='ng-scope'/&gt;&lt;webctrl tag='tr' class='ng-scope' idx='1'/&gt;&lt;webctrl tag='td' class='col-md-6 col-sm-6 eventPoint' idx='1'/&gt;&lt;webctrl tag='div' class='row' idx='1'/&gt;&lt;webctrl tag='div' class='col-md-3 col-sm-3' idx='1'/&gt;&lt;webctrl tag='div' class='row' idx='1'/&gt;&lt;webctrl tag='table' idx='1'/&gt;&lt;webctrl tag='tbody' idx='1'/&gt;&lt;webctrl tag='tr' idx='1'/&gt;&lt;webctrl tag='td' idx='1'/&gt;&lt;webctrl tag='span' class='timing ng-binding' idx='1'/&gt;&lt;/column&gt;&lt;/extract&gt;" sap2010:WorkflowViewState.IdRef="ExtractData_10" MaxNumberOfResults="100">
+                          <ui:ExtractData.Target>
+                            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="6ac6deb5ae20f644f81cd2cdba83f882" Selector="&lt;webctrl id='bookOutwardFlight' tag='TABLE' /&gt;" WaitForReady="COMPLETE" />
+                          </ui:ExtractData.Target>
+                        </ui:ExtractData>
+                        <If Condition="[isNothing(prices) Or isNothing(timestamps)]" DisplayName="Check If Scrape was Successful" sap2010:WorkflowViewState.IdRef="If_5">
+                          <If.Then>
+                            <ui:LogMessage DisplayName="ErrorScrapeData" sap2010:WorkflowViewState.IdRef="LogMessage_15" Level="Error" Message="[&quot;Could not scrape data: Prices: &quot;+isNothing(prices).ToString + &quot; Timestamps: &quot; + isNothing(timestamps).ToString]" />
+                          </If.Then>
+                          <If.Else>
+                            <Assign sap2010:WorkflowViewState.IdRef="Assign_32">
+                              <Assign.To>
+                                <OutArgument x:TypeArguments="x:Boolean">[hasError]</OutArgument>
+                              </Assign.To>
+                              <Assign.Value>
+                                <InArgument x:TypeArguments="x:Boolean">True</InArgument>
+                              </Assign.Value>
+                            </Assign>
+                          </If.Else>
+                        </If>
+                        <ui:ForEachRow DataTable="[timestamps]" DisplayName="For each row" sap2010:WorkflowViewState.IdRef="ForEachRow_2">
+                          <ui:ForEachRow.Body>
+                            <ActivityAction x:TypeArguments="sd:DataRow">
+                              <ActivityAction.Argument>
+                                <DelegateInArgument x:TypeArguments="sd:DataRow" Name="row" />
+                              </ActivityAction.Argument>
+                              <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_37">
+                                <AddToCollection x:TypeArguments="x:String" Collection="[arrTimestamps]" DisplayName="Add to collection" sap2010:WorkflowViewState.IdRef="AddToCollection`1_6" Item="[row.ItemArray(0).ToString]" />
+                                <AddToCollection x:TypeArguments="x:String" Collection="[arrTimestamps]" DisplayName="Add to collection" sap2010:WorkflowViewState.IdRef="AddToCollection`1_7" Item="[row.ItemArray(0).ToString]" />
+                              </Sequence>
+                            </ActivityAction>
+                          </ui:ForEachRow.Body>
+                        </ui:ForEachRow>
+                      </Sequence>
                     </Sequence>
-                    <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_36">
-                      <ui:ExtractData NextLinkSelector="{x:Null}" ContinueOnError="False" DataTable="[timestamps]" DelayBetweenPagesMS="300" DisplayName="Extract timestamps from table" ExtractMetadata="&lt;extract&gt;&lt;column exact='1' name='Column1' attr='text'&gt;&lt;webctrl tag='tbody' class='ng-scope'/&gt;&lt;webctrl tag='tr' class='ng-scope' idx='1'/&gt;&lt;webctrl tag='td' class='col-md-6 col-sm-6 eventPoint' idx='1'/&gt;&lt;webctrl tag='div' class='row' idx='1'/&gt;&lt;webctrl tag='div' class='col-md-3 col-sm-3' idx='1'/&gt;&lt;webctrl tag='div' class='row' idx='1'/&gt;&lt;webctrl tag='table' idx='1'/&gt;&lt;webctrl tag='tbody' idx='1'/&gt;&lt;webctrl tag='tr' idx='1'/&gt;&lt;webctrl tag='td' idx='1'/&gt;&lt;webctrl tag='span' class='timing ng-binding' idx='1'/&gt;&lt;/column&gt;&lt;/extract&gt;" sap2010:WorkflowViewState.IdRef="ExtractData_10" MaxNumberOfResults="100">
-                        <ui:ExtractData.Target>
-                          <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="6ac6deb5ae20f644f81cd2cdba83f882" Selector="&lt;webctrl id='bookOutwardFlight' tag='TABLE' /&gt;" WaitForReady="COMPLETE" />
-                        </ui:ExtractData.Target>
-                      </ui:ExtractData>
-                      <If Condition="[isNothing(prices) Or isNothing(timestamps)]" DisplayName="Check If Scrape was Successful" sap2010:WorkflowViewState.IdRef="If_5">
-                        <If.Then>
-                          <ui:LogMessage DisplayName="ErrorScrapeData" sap2010:WorkflowViewState.IdRef="LogMessage_15" Level="Error" Message="[&quot;Could not scrape data: Prices: &quot;+isNothing(prices).ToString + &quot; Timestamps: &quot; + isNothing(timestamps).ToString]" />
-                        </If.Then>
-                      </If>
-                      <ui:ForEachRow DataTable="[timestamps]" DisplayName="For each row" sap2010:WorkflowViewState.IdRef="ForEachRow_2">
-                        <ui:ForEachRow.Body>
-                          <ActivityAction x:TypeArguments="sd:DataRow">
-                            <ActivityAction.Argument>
-                              <DelegateInArgument x:TypeArguments="sd:DataRow" Name="row" />
-                            </ActivityAction.Argument>
-                            <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_37">
-                              <AddToCollection x:TypeArguments="x:String" Collection="[arrTimestamps]" DisplayName="Add to collection" sap2010:WorkflowViewState.IdRef="AddToCollection`1_6" Item="[row.ItemArray(0).ToString]" />
-                              <AddToCollection x:TypeArguments="x:String" Collection="[arrTimestamps]" DisplayName="Add to collection" sap2010:WorkflowViewState.IdRef="AddToCollection`1_7" Item="[row.ItemArray(0).ToString]" />
-                            </Sequence>
-                          </ActivityAction>
-                        </ui:ForEachRow.Body>
-                      </ui:ForEachRow>
-                    </Sequence>
+                    <ui:CloseTab Browser="{x:Null}" DisplayName="Close tab" sap2010:WorkflowViewState.IdRef="CloseTab_1" />
                   </Sequence>
                 </ActivityAction>
               </ui:OpenBrowser.Body>
             </ui:OpenBrowser>
             <FlowStep.Next>
-              <FlowStep x:Name="__ReferenceID8" sap2010:WorkflowViewState.IdRef="FlowStep_28">
-                <Sequence DisplayName="Find lowest price" sap2010:WorkflowViewState.IdRef="Sequence_13">
-                  <Sequence.Variables>
-                    <Variable x:TypeArguments="x:Int32" Name="ind" />
-                    <Variable x:TypeArguments="x:Int32" Default="5000" Name="minPrice" />
-                    <Variable x:TypeArguments="x:Int32" Name="minIndex" />
-                    <Variable x:TypeArguments="x:Int32" Name="i" />
-                  </Sequence.Variables>
-                  <Assign sap2010:WorkflowViewState.IdRef="Assign_10">
-                    <Assign.To>
-                      <OutArgument x:TypeArguments="x:Int32">[count]</OutArgument>
-                    </Assign.To>
-                    <Assign.Value>
-                      <InArgument x:TypeArguments="x:Int32">[prices.Rows.Count]</InArgument>
-                    </Assign.Value>
-                  </Assign>
-                  <Assign sap2010:WorkflowViewState.IdRef="Assign_11">
-                    <Assign.To>
-                      <OutArgument x:TypeArguments="x:Int32">[t]</OutArgument>
-                    </Assign.To>
-                    <Assign.Value>
-                      <InArgument x:TypeArguments="x:Int32">0</InArgument>
-                    </Assign.Value>
-                  </Assign>
-                  <While sap2010:WorkflowViewState.IdRef="While_2" Condition="[t &lt; count]">
-                    <Sequence sap2010:WorkflowViewState.IdRef="Sequence_14">
+              <FlowDecision x:Name="__ReferenceID11" DisplayName="Success / Error" sap2010:WorkflowViewState.IdRef="FlowDecision_5">
+                <FlowDecision.True>
+                  <FlowStep x:Name="__ReferenceID7" sap2010:WorkflowViewState.IdRef="FlowStep_28">
+                    <Sequence DisplayName="Find lowest  flight price" sap2010:WorkflowViewState.IdRef="Sequence_13">
                       <Sequence.Variables>
-                        <Variable x:TypeArguments="x:Int32" Name="currentPrice" />
-                        <Variable x:TypeArguments="x:String" Name="stringCurrentPrice" />
-                        <Variable x:TypeArguments="x:Int32" Default="7" Name="THOUSAND" />
+                        <Variable x:TypeArguments="x:Int32" Name="ind" />
+                        <Variable x:TypeArguments="x:Int32" Default="5000" Name="minPrice" />
+                        <Variable x:TypeArguments="x:Int32" Name="minIndex" />
+                        <Variable x:TypeArguments="x:Int32" Name="i" />
                       </Sequence.Variables>
-                      <Assign sap2010:WorkflowViewState.IdRef="Assign_13">
+                      <Assign sap2010:WorkflowViewState.IdRef="Assign_10">
                         <Assign.To>
-                          <OutArgument x:TypeArguments="x:String">[stringPrice]</OutArgument>
+                          <OutArgument x:TypeArguments="x:Int32">[count]</OutArgument>
                         </Assign.To>
                         <Assign.Value>
-                          <InArgument x:TypeArguments="x:String">[prices.Rows(t).ItemArray(0).ToString]</InArgument>
+                          <InArgument x:TypeArguments="x:Int32">[prices.Rows.Count]</InArgument>
                         </Assign.Value>
                       </Assign>
-                      <If Condition="[stringPrice.Length &lt; THOUSAND]" sap2010:WorkflowViewState.IdRef="If_1">
-                        <If.Then>
-                          <Sequence sap2010:WorkflowViewState.IdRef="Sequence_24">
-                            <Assign DisplayName="Assign Price" sap2010:WorkflowViewState.IdRef="Assign_16">
-                              <Assign.To>
-                                <OutArgument x:TypeArguments="x:String">[stringPrice]</OutArgument>
-                              </Assign.To>
-                              <Assign.Value>
-                                <InArgument x:TypeArguments="x:String">[stringPrice.Replace(stringPrice.Substring(3), String.Empty)]</InArgument>
-                              </Assign.Value>
-                            </Assign>
-                          </Sequence>
-                        </If.Then>
-                        <If.Else>
-                          <Sequence sap2010:WorkflowViewState.IdRef="Sequence_23">
-                            <Assign DisplayName="Assign Price" sap2010:WorkflowViewState.IdRef="Assign_15">
-                              <Assign.To>
-                                <OutArgument x:TypeArguments="x:String">[stringPrice]</OutArgument>
-                              </Assign.To>
-                              <Assign.Value>
-                                <InArgument x:TypeArguments="x:String">[stringPrice.Replace(stringPrice.Substring(5), String.Empty)]</InArgument>
-                              </Assign.Value>
-                            </Assign>
-                            <Assign sap2010:WorkflowViewState.IdRef="Assign_14">
-                              <Assign.To>
-                                <OutArgument x:TypeArguments="x:String">[stringPrice]</OutArgument>
-                              </Assign.To>
-                              <Assign.Value>
-                                <InArgument x:TypeArguments="x:String">[stringPrice.Remove(1, 1)]</InArgument>
-                              </Assign.Value>
-                            </Assign>
-                          </Sequence>
-                        </If.Else>
-                      </If>
-                      <Assign sap2010:WorkflowViewState.IdRef="Assign_18">
-                        <Assign.To>
-                          <OutArgument x:TypeArguments="x:Int32">[intPrice]</OutArgument>
-                        </Assign.To>
-                        <Assign.Value>
-                          <InArgument x:TypeArguments="x:Int32">[Convert.ToInt32(stringPrice)]</InArgument>
-                        </Assign.Value>
-                      </Assign>
-                      <AddToCollection x:TypeArguments="x:Int32" Collection="[intPrices]" DisplayName="Add to collection" sap2010:WorkflowViewState.IdRef="AddToCollection`1_5" Item="[intPrice]" />
-                      <Assign sap2010:WorkflowViewState.IdRef="Assign_9">
+                      <Assign sap2010:WorkflowViewState.IdRef="Assign_11">
                         <Assign.To>
                           <OutArgument x:TypeArguments="x:Int32">[t]</OutArgument>
                         </Assign.To>
                         <Assign.Value>
-                          <InArgument x:TypeArguments="x:Int32">[t+1]</InArgument>
+                          <InArgument x:TypeArguments="x:Int32">0</InArgument>
                         </Assign.Value>
                       </Assign>
+                      <While sap2010:WorkflowViewState.IdRef="While_2" Condition="[t &lt; count]">
+                        <Sequence sap2010:WorkflowViewState.IdRef="Sequence_14">
+                          <Sequence.Variables>
+                            <Variable x:TypeArguments="x:Int32" Name="currentPrice" />
+                            <Variable x:TypeArguments="x:String" Name="stringCurrentPrice" />
+                            <Variable x:TypeArguments="x:Int32" Default="7" Name="THOUSAND" />
+                          </Sequence.Variables>
+                          <Assign sap2010:WorkflowViewState.IdRef="Assign_13">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:String">[stringPrice]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:String">[prices.Rows(t).ItemArray(0).ToString]</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                          <If Condition="[stringPrice.Length &lt; THOUSAND]" sap2010:WorkflowViewState.IdRef="If_1">
+                            <If.Then>
+                              <Sequence sap2010:WorkflowViewState.IdRef="Sequence_24">
+                                <Assign DisplayName="Assign Price" sap2010:WorkflowViewState.IdRef="Assign_16">
+                                  <Assign.To>
+                                    <OutArgument x:TypeArguments="x:String">[stringPrice]</OutArgument>
+                                  </Assign.To>
+                                  <Assign.Value>
+                                    <InArgument x:TypeArguments="x:String">[stringPrice.Replace(stringPrice.Substring(3), String.Empty)]</InArgument>
+                                  </Assign.Value>
+                                </Assign>
+                              </Sequence>
+                            </If.Then>
+                            <If.Else>
+                              <Sequence sap2010:WorkflowViewState.IdRef="Sequence_23">
+                                <Assign DisplayName="Assign Price" sap2010:WorkflowViewState.IdRef="Assign_15">
+                                  <Assign.To>
+                                    <OutArgument x:TypeArguments="x:String">[stringPrice]</OutArgument>
+                                  </Assign.To>
+                                  <Assign.Value>
+                                    <InArgument x:TypeArguments="x:String">[stringPrice.Replace(stringPrice.Substring(5), String.Empty)]</InArgument>
+                                  </Assign.Value>
+                                </Assign>
+                                <Assign sap2010:WorkflowViewState.IdRef="Assign_14">
+                                  <Assign.To>
+                                    <OutArgument x:TypeArguments="x:String">[stringPrice]</OutArgument>
+                                  </Assign.To>
+                                  <Assign.Value>
+                                    <InArgument x:TypeArguments="x:String">[stringPrice.Remove(1, 1)]</InArgument>
+                                  </Assign.Value>
+                                </Assign>
+                              </Sequence>
+                            </If.Else>
+                          </If>
+                          <Assign sap2010:WorkflowViewState.IdRef="Assign_18">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:Int32">[intPrice]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:Int32">[Convert.ToInt32(stringPrice)]</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                          <AddToCollection x:TypeArguments="x:Int32" Collection="[intPrices]" DisplayName="Add to collection" sap2010:WorkflowViewState.IdRef="AddToCollection`1_5" Item="[intPrice]" />
+                          <Assign sap2010:WorkflowViewState.IdRef="Assign_9">
+                            <Assign.To>
+                              <OutArgument x:TypeArguments="x:Int32">[t]</OutArgument>
+                            </Assign.To>
+                            <Assign.Value>
+                              <InArgument x:TypeArguments="x:Int32">[t+1]</InArgument>
+                            </Assign.Value>
+                          </Assign>
+                        </Sequence>
+                      </While>
+                      <ui:ForEach x:TypeArguments="x:Int32" DisplayName="For each" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[intPrices]">
+                        <ui:ForEach.Body>
+                          <ActivityAction x:TypeArguments="x:Int32">
+                            <ActivityAction.Argument>
+                              <DelegateInArgument x:TypeArguments="x:Int32" Name="item" />
+                            </ActivityAction.Argument>
+                            <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_31">
+                              <If Condition="[minPrice &gt; item]" sap2010:WorkflowViewState.IdRef="If_2">
+                                <If.Then>
+                                  <Sequence sap2010:WorkflowViewState.IdRef="Sequence_32">
+                                    <Assign sap2010:WorkflowViewState.IdRef="Assign_20">
+                                      <Assign.To>
+                                        <OutArgument x:TypeArguments="x:Int32">[minPrice]</OutArgument>
+                                      </Assign.To>
+                                      <Assign.Value>
+                                        <InArgument x:TypeArguments="x:Int32">[item]</InArgument>
+                                      </Assign.Value>
+                                    </Assign>
+                                    <Assign sap2010:WorkflowViewState.IdRef="Assign_22">
+                                      <Assign.To>
+                                        <OutArgument x:TypeArguments="x:Int32">[minIndex]</OutArgument>
+                                      </Assign.To>
+                                      <Assign.Value>
+                                        <InArgument x:TypeArguments="x:Int32">[ind]</InArgument>
+                                      </Assign.Value>
+                                    </Assign>
+                                  </Sequence>
+                                </If.Then>
+                              </If>
+                              <Assign sap2010:WorkflowViewState.IdRef="Assign_23">
+                                <Assign.To>
+                                  <OutArgument x:TypeArguments="x:Int32">[ind]</OutArgument>
+                                </Assign.To>
+                                <Assign.Value>
+                                  <InArgument x:TypeArguments="x:Int32">[ind+1]</InArgument>
+                                </Assign.Value>
+                              </Assign>
+                            </Sequence>
+                          </ActivityAction>
+                        </ui:ForEach.Body>
+                      </ui:ForEach>
+                      <ui:ForEach x:TypeArguments="x:Int32" DisplayName="For each" sap2010:WorkflowViewState.IdRef="ForEach`1_5" Values="[intPrices]">
+                        <ui:ForEach.Body>
+                          <ActivityAction x:TypeArguments="x:Int32">
+                            <ActivityAction.Argument>
+                              <DelegateInArgument x:TypeArguments="x:Int32" Name="item" />
+                            </ActivityAction.Argument>
+                            <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_33">
+                              <If Condition="[item = minPrice]" sap2010:WorkflowViewState.IdRef="If_3">
+                                <If.Then>
+                                  <Sequence sap2010:WorkflowViewState.IdRef="Sequence_35">
+                                    <Sequence sap2010:WorkflowViewState.IdRef="Sequence_34">
+                                      <Sequence.Variables>
+                                        <Variable x:TypeArguments="x:String" Default="Class not set" Name="flightClass" />
+                                      </Sequence.Variables>
+                                      <If Condition="[i mod 2 = 1]" sap2010:WorkflowViewState.IdRef="If_4">
+                                        <If.Then>
+                                          <Assign sap2010:WorkflowViewState.IdRef="Assign_25">
+                                            <Assign.To>
+                                              <OutArgument x:TypeArguments="x:String">[flightClass]</OutArgument>
+                                            </Assign.To>
+                                            <Assign.Value>
+                                              <InArgument x:TypeArguments="x:String">Go</InArgument>
+                                            </Assign.Value>
+                                          </Assign>
+                                        </If.Then>
+                                        <If.Else>
+                                          <Assign sap2010:WorkflowViewState.IdRef="Assign_26">
+                                            <Assign.To>
+                                              <OutArgument x:TypeArguments="x:String">[flightClass]</OutArgument>
+                                            </Assign.To>
+                                            <Assign.Value>
+                                              <InArgument x:TypeArguments="x:String">Plus</InArgument>
+                                            </Assign.Value>
+                                          </Assign>
+                                        </If.Else>
+                                      </If>
+                                      <Assign sap2010:WorkflowViewState.IdRef="Assign_28">
+                                        <Assign.To>
+                                          <OutArgument x:TypeArguments="x:String">[messageString]</OutArgument>
+                                        </Assign.To>
+                                        <Assign.Value>
+                                          <InArgument x:TypeArguments="x:String">[messageString + arrTimestamps(i) + " " + item.ToString + ",- ("+flightClass+")" + Environment.NewLine]</InArgument>
+                                        </Assign.Value>
+                                      </Assign>
+                                    </Sequence>
+                                  </Sequence>
+                                </If.Then>
+                              </If>
+                              <Assign sap2010:WorkflowViewState.IdRef="Assign_27">
+                                <Assign.To>
+                                  <OutArgument x:TypeArguments="x:Int32">[i]</OutArgument>
+                                </Assign.To>
+                                <Assign.Value>
+                                  <InArgument x:TypeArguments="x:Int32">[i + 1]</InArgument>
+                                </Assign.Value>
+                              </Assign>
+                            </Sequence>
+                          </ActivityAction>
+                        </ui:ForEach.Body>
+                      </ui:ForEach>
                     </Sequence>
-                  </While>
-                  <ui:ForEach x:TypeArguments="x:Int32" DisplayName="For each" sap2010:WorkflowViewState.IdRef="ForEach`1_3" Values="[intPrices]">
-                    <ui:ForEach.Body>
-                      <ActivityAction x:TypeArguments="x:Int32">
-                        <ActivityAction.Argument>
-                          <DelegateInArgument x:TypeArguments="x:Int32" Name="item" />
-                        </ActivityAction.Argument>
-                        <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_31">
-                          <If Condition="[minPrice &gt; item]" sap2010:WorkflowViewState.IdRef="If_2">
-                            <If.Then>
-                              <Sequence sap2010:WorkflowViewState.IdRef="Sequence_32">
-                                <Assign sap2010:WorkflowViewState.IdRef="Assign_20">
-                                  <Assign.To>
-                                    <OutArgument x:TypeArguments="x:Int32">[minPrice]</OutArgument>
-                                  </Assign.To>
-                                  <Assign.Value>
-                                    <InArgument x:TypeArguments="x:Int32">[item]</InArgument>
-                                  </Assign.Value>
-                                </Assign>
-                                <Assign sap2010:WorkflowViewState.IdRef="Assign_22">
-                                  <Assign.To>
-                                    <OutArgument x:TypeArguments="x:Int32">[minIndex]</OutArgument>
-                                  </Assign.To>
-                                  <Assign.Value>
-                                    <InArgument x:TypeArguments="x:Int32">[ind]</InArgument>
-                                  </Assign.Value>
-                                </Assign>
-                              </Sequence>
-                            </If.Then>
-                          </If>
-                          <Assign sap2010:WorkflowViewState.IdRef="Assign_23">
-                            <Assign.To>
-                              <OutArgument x:TypeArguments="x:Int32">[ind]</OutArgument>
-                            </Assign.To>
-                            <Assign.Value>
-                              <InArgument x:TypeArguments="x:Int32">[ind+1]</InArgument>
-                            </Assign.Value>
-                          </Assign>
-                        </Sequence>
-                      </ActivityAction>
-                    </ui:ForEach.Body>
-                  </ui:ForEach>
-                  <ui:ForEach x:TypeArguments="x:Int32" DisplayName="For each" sap2010:WorkflowViewState.IdRef="ForEach`1_5" Values="[intPrices]">
-                    <ui:ForEach.Body>
-                      <ActivityAction x:TypeArguments="x:Int32">
-                        <ActivityAction.Argument>
-                          <DelegateInArgument x:TypeArguments="x:Int32" Name="item" />
-                        </ActivityAction.Argument>
-                        <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_33">
-                          <If Condition="[item = minPrice]" sap2010:WorkflowViewState.IdRef="If_3">
-                            <If.Then>
-                              <Sequence sap2010:WorkflowViewState.IdRef="Sequence_35">
-                                <Sequence sap2010:WorkflowViewState.IdRef="Sequence_34">
-                                  <Sequence.Variables>
-                                    <Variable x:TypeArguments="x:String" Default="Class not set" Name="flightClass" />
-                                  </Sequence.Variables>
-                                  <If Condition="[i mod 2 = 1]" sap2010:WorkflowViewState.IdRef="If_4">
-                                    <If.Then>
-                                      <Assign sap2010:WorkflowViewState.IdRef="Assign_25">
-                                        <Assign.To>
-                                          <OutArgument x:TypeArguments="x:String">[flightClass]</OutArgument>
-                                        </Assign.To>
-                                        <Assign.Value>
-                                          <InArgument x:TypeArguments="x:String">Go</InArgument>
-                                        </Assign.Value>
-                                      </Assign>
-                                    </If.Then>
-                                    <If.Else>
-                                      <Assign sap2010:WorkflowViewState.IdRef="Assign_26">
-                                        <Assign.To>
-                                          <OutArgument x:TypeArguments="x:String">[flightClass]</OutArgument>
-                                        </Assign.To>
-                                        <Assign.Value>
-                                          <InArgument x:TypeArguments="x:String">Plus</InArgument>
-                                        </Assign.Value>
-                                      </Assign>
-                                    </If.Else>
-                                  </If>
-                                  <Assign sap2010:WorkflowViewState.IdRef="Assign_28">
-                                    <Assign.To>
-                                      <OutArgument x:TypeArguments="x:String">[messageString]</OutArgument>
-                                    </Assign.To>
-                                    <Assign.Value>
-                                      <InArgument x:TypeArguments="x:String">[messageString + arrTimestamps(i) + " " + item.ToString + ",- ("+flightClass+")" + Environment.NewLine]</InArgument>
-                                    </Assign.Value>
-                                  </Assign>
-                                </Sequence>
-                              </Sequence>
-                            </If.Then>
-                          </If>
-                          <Assign sap2010:WorkflowViewState.IdRef="Assign_27">
-                            <Assign.To>
-                              <OutArgument x:TypeArguments="x:Int32">[i]</OutArgument>
-                            </Assign.To>
-                            <Assign.Value>
-                              <InArgument x:TypeArguments="x:Int32">[i + 1]</InArgument>
-                            </Assign.Value>
-                          </Assign>
-                        </Sequence>
-                      </ActivityAction>
-                    </ui:ForEach.Body>
-                  </ui:ForEach>
-                </Sequence>
-                <FlowStep.Next>
-                  <FlowStep x:Name="__ReferenceID9" sap2010:WorkflowViewState.IdRef="FlowStep_34">
-                    <ui:LogMessage DisplayName="Log message" sap2010:WorkflowViewState.IdRef="LogMessage_14" Level="Info" Message="[&quot;Cheapest ticket(s) for &quot;+chosDate+&quot;: &quot;+Environment.NewLine+messageString+Environment.NewLine+&quot;Order at: &quot;+URLstart+stringChosenDate+URLend+Environment.NewLine+Environment.NewLine+&quot;----------------------------------------------&quot;+Environment.NewLine+&quot;Brought to you by HoveRoboServices AS&quot;]" />
+                    <FlowStep.Next>
+                      <FlowStep x:Name="__ReferenceID9" sap2010:WorkflowViewState.IdRef="FlowStep_35">
+                        <Assign sap2010:WorkflowViewState.IdRef="Assign_29">
+                          <Assign.To>
+                            <OutArgument x:TypeArguments="ui:GenericValue">[message]</OutArgument>
+                          </Assign.To>
+                          <Assign.Value>
+                            <InArgument x:TypeArguments="ui:GenericValue">["Cheapest ticket(s) for "+chosDate+": "+Environment.NewLine+messageString+Environment.NewLine+"Order at: "+URLstart+stringChosenDate+URLend+Environment.NewLine+Environment.NewLine+"----------------------------------------------"+Environment.NewLine+"Brought to you by HoveRoboServices AS"]</InArgument>
+                          </Assign.Value>
+                        </Assign>
+                        <FlowStep.Next>
+                          <FlowStep x:Name="__ReferenceID8" sap2010:WorkflowViewState.IdRef="FlowStep_34">
+                            <ui:LogMessage DisplayName="Log to console" sap2010:WorkflowViewState.IdRef="LogMessage_14" Level="Info" Message="[&quot;Cheapest ticket(s) for &quot;+chosDate+&quot;: &quot;+Environment.NewLine+messageString+Environment.NewLine+&quot;Order at: &quot;+URLstart+stringChosenDate+URLend+Environment.NewLine+Environment.NewLine+&quot;----------------------------------------------&quot;+Environment.NewLine+&quot;Brought to you by HoveRoboServices AS&quot;]" />
+                          </FlowStep>
+                        </FlowStep.Next>
+                      </FlowStep>
+                    </FlowStep.Next>
                   </FlowStep>
-                </FlowStep.Next>
-              </FlowStep>
+                </FlowDecision.True>
+                <FlowDecision.False>
+                  <x:Reference>__ReferenceID6</x:Reference>
+                </FlowDecision.False>
+              </FlowDecision>
             </FlowStep.Next>
           </FlowStep>
         </FlowStep.Next>
       </FlowStep>
     </Flowchart.StartNode>
     <x:Reference>__ReferenceID6</x:Reference>
-    <FlowStep sap2010:WorkflowViewState.IdRef="FlowStep_4">
-      <ui:InputDialog Options="{x:Null}" DisplayName="Input dialog" sap2010:WorkflowViewState.IdRef="InputDialog_1" IsPassword="False" Label="dd.mm.yy" Title="Input date">
-        <ui:InputDialog.Result>
-          <OutArgument x:TypeArguments="x:String">[chosDate]</OutArgument>
-        </ui:InputDialog.Result>
-      </ui:InputDialog>
-      <FlowStep.Next>
-        <FlowStep x:Name="__ReferenceID7" sap2010:WorkflowViewState.IdRef="FlowStep_5">
-          <Assign DisplayName="Assign Date" sap2010:WorkflowViewState.IdRef="Assign_1">
-            <Assign.To>
-              <OutArgument x:TypeArguments="x:String">[stringChosenDate]</OutArgument>
-            </Assign.To>
-            <Assign.Value>
-              <InArgument x:TypeArguments="x:String">["20"+chosDate.Substring(6,2)+chosDate.Substring(3,2)+chosDate.Substring(0,2)]</InArgument>
-            </Assign.Value>
-          </Assign>
-          <FlowStep.Next>
-            <x:Reference>__ReferenceID6</x:Reference>
-          </FlowStep.Next>
-        </FlowStep>
-      </FlowStep.Next>
-    </FlowStep>
     <x:Reference>__ReferenceID7</x:Reference>
-    <FlowStep sap2010:WorkflowViewState.IdRef="FlowStep_16">
-      <ui:InvokeCode ContinueOnError="{x:Null}" Code="outp = MsgBox(Regex.Replace(s, &quot;[^a-zA-Z ]&quot;, &quot;&quot;))" DisplayName="Invoke code" sap2010:WorkflowViewState.IdRef="InvokeCode_1">
-        <ui:InvokeCode.Arguments>
-          <InArgument x:TypeArguments="x:String" x:Key="getVal" />
-          <OutArgument x:TypeArguments="x:String" x:Key="output" />
-        </ui:InvokeCode.Arguments>
-      </ui:InvokeCode>
-    </FlowStep>
-    <FlowStep sap2010:WorkflowViewState.IdRef="FlowStep_23">
-      <ui:ForEach x:TypeArguments="x:String" DisplayName="For each" sap2010:WorkflowViewState.IdRef="ForEach`1_2" Values="[prices]">
-        <ui:ForEach.Body>
-          <ActivityAction x:TypeArguments="x:String">
-            <ActivityAction.Argument>
-              <DelegateInArgument x:TypeArguments="x:String" Name="item" />
-            </ActivityAction.Argument>
-            <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_11">
-              <ui:LogMessage DisplayName="Log message" sap2010:WorkflowViewState.IdRef="LogMessage_2" Level="Error" Message="[item]" />
-            </Sequence>
-          </ActivityAction>
-        </ui:ForEach.Body>
-      </ui:ForEach>
-    </FlowStep>
-    <x:Reference>__ReferenceID8</x:Reference>
     <FlowStep sap2010:WorkflowViewState.IdRef="FlowStep_30">
       <ui:BrowserScope Browser="{x:Null}" SearchScope="{x:Null}" TimeoutMS="{x:Null}" UiBrowser="{x:Null}" BrowserType="Chrome" DisplayName="(DEBUG) Get data from SAS.no" sap2010:WorkflowViewState.IdRef="BrowserScope_4" InformativeScreenshot="c1a041b9b4f28db5f366853b228b68e7" Selector="&lt;html app='chrome.exe' title='Billige flybilletter og flyreiser – søk og bestill fly - SAS' /&gt;">
         <ui:BrowserScope.Body>
@@ -477,49 +471,17 @@
           </ActivityAction>
         </ui:BrowserScope.Body>
       </ui:BrowserScope>
-      <FlowStep.Next>
-        <x:Reference>__ReferenceID8</x:Reference>
-      </FlowStep.Next>
     </FlowStep>
-    <FlowStep x:Name="__ReferenceID10" sap2010:WorkflowViewState.IdRef="FlowStep_33">
-      <ui:SendOutlookMail Account="{x:Null}" Bcc="{x:Null}" Cc="{x:Null}" MailMessage="{x:Null}" TimeoutMS="{x:Null}" Body="[message]" DisplayName="Send Outlook Mail Message" sap2010:WorkflowViewState.IdRef="SendOutlookMail_2" IsBodyHtml="False" IsDraft="False" Subject="[&quot;Flights &quot;+chosDate]" To="[recipient]">
+    <FlowStep sap2010:WorkflowViewState.IdRef="FlowStep_33">
+      <ui:SendOutlookMail Account="{x:Null}" Bcc="{x:Null}" Cc="{x:Null}" MailMessage="{x:Null}" TimeoutMS="{x:Null}" Body="[message]" DisplayName="Just email" sap2010:WorkflowViewState.IdRef="SendOutlookMail_2" IsBodyHtml="False" IsDraft="False" Subject="[&quot;Flights &quot;+chosDate]" To="[recipient]">
         <ui:SendOutlookMail.Files>
           <scg:List x:TypeArguments="InArgument(x:String)" Capacity="0" />
         </ui:SendOutlookMail.Files>
       </ui:SendOutlookMail>
     </FlowStep>
+    <x:Reference>__ReferenceID8</x:Reference>
     <x:Reference>__ReferenceID9</x:Reference>
-    <FlowStep sap2010:WorkflowViewState.IdRef="FlowStep_35">
-      <Assign sap2010:WorkflowViewState.IdRef="Assign_29">
-        <Assign.To>
-          <OutArgument x:TypeArguments="ui:GenericValue">[message]</OutArgument>
-        </Assign.To>
-        <Assign.Value>
-          <InArgument x:TypeArguments="ui:GenericValue">["Cheapest ticket(s) for "+chosDate+": "+Environment.NewLine+messageString+Environment.NewLine+"Order at: "+URLstart+stringChosenDate+URLend+Environment.NewLine+Environment.NewLine+"----------------------------------------------"+Environment.NewLine+"Brought to you by HoveRoboServices AS"]</InArgument>
-        </Assign.Value>
-      </Assign>
-      <FlowStep.Next>
-        <x:Reference>__ReferenceID10</x:Reference>
-      </FlowStep.Next>
-    </FlowStep>
-    <FlowStep sap2010:WorkflowViewState.IdRef="FlowStep_36">
-      <Sequence DisplayName="Get date from user" sap2010:WorkflowViewState.IdRef="Sequence_38">
-        <ui:InputDialog Options="{x:Null}" DisplayName="Date to retrieve flights" sap2010:WorkflowViewState.IdRef="InputDialog_2" IsPassword="False" Label="Input the desired date (dd.mm.yy)" Title="Input date">
-          <ui:InputDialog.Result>
-            <OutArgument x:TypeArguments="x:String">[chosDate]</OutArgument>
-          </ui:InputDialog.Result>
-        </ui:InputDialog>
-        <Assign DisplayName="Assign Date" sap2010:WorkflowViewState.IdRef="Assign_30">
-          <Assign.To>
-            <OutArgument x:TypeArguments="x:String">[stringChosenDate]</OutArgument>
-          </Assign.To>
-          <Assign.Value>
-            <InArgument x:TypeArguments="x:String">["20"+chosDate.Substring(6,2)+chosDate.Substring(3,2)+chosDate.Substring(0,2)]</InArgument>
-          </Assign.Value>
-        </Assign>
-      </Sequence>
-    </FlowStep>
-    <x:Reference>__ReferenceID11</x:Reference>
+    <x:Reference>__ReferenceID10</x:Reference>
     <FlowStep sap2010:WorkflowViewState.IdRef="FlowStep_42">
       <Sequence DisplayName="Screenshot'n'email" sap2010:WorkflowViewState.IdRef="Sequence_39">
         <ui:TakeScreenshot WaitBefore="{x:Null}" DisplayName="Take screenshot 'TABLE  bookOutwardFlight'" sap2010:WorkflowViewState.IdRef="TakeScreenshot_2" Screenshot="[scrnsht]">
@@ -535,7 +497,8 @@
         </ui:SendOutlookMail>
       </Sequence>
     </FlowStep>
-    <sads:DebugSymbol.Symbol>dzpDOlxVc2Vyc1xhbmhvdmVcRG9jdW1lbnRzXFVpUGF0aFxUaG9tYXNDaGFsbGVuZ2VcTWFpbi54YW1sgQFAA5sEDwIBAUg4SFUCAQdJPUlTAgEGTT5NVQIBBVA0UH8CAQRRNFGjAQIBA1Q0VFACAQJYCY4BFQMBogGRAQ27AR4CAXq+ARH+AhwCAQqBAxWBA9wDAgEIWw9fIAMBsAFhQWGpAQMBrwF0H3TxAQMBrAFjRWOtAQMBqwFlSWWyAQMBqgFoH28oAwGjAZEBzwGRAfMBAwGeAZcBE7gBHgIBe8EBQcEBRwIBC8UBE8wBHAIBds0BE9QBHAIBctUBE5gCGwIBQ5kCE8ECIAIBK8ICE/0CIAIBDIEDgwGBA9kDAgEJW5YBW6ABAwG0AV07XUUDAbIBW6cBW7MBAwGxAXRbdGoDAa4BdNABdN8BAwGtAW1KbZgBAwGmAWpLal0DAaQBmAEVngEgAwGVAZ8BFbcBIAIBfMoBPcoBUAIBeccBPscBRQIBd9IBPdIBPgIBdc8BPs8BQQIBc9YBFZcCIAIBR9UBTtUBXgIBRJkChQGZApIBAgFBnwIZvgIkAgEswgKFAcICkgECASnIAhn6AiQCAQ2ZARedASgDAZYBoAEXpAEoAwGNAaUBF6kBHAMBiQGqARe2AScCAX3aAUXaAUgCAUjcARfjASACAW7kAReFAhwCAVeGAheNAiACAVOOAheOAsUBAgFOjwIXlgIgAgFJoAIbtQIgAgEytgIbvQIkAgEtyQIb8QIgAgET8gIb+QIkAgEOmQHXBJkB3AQDAZ0BmwGqAZsB4AEDAZwBmQGEAZkBiQEDAZsBmQFTmQFaAwGaAZkBZZkBbwMBmAGZAcIBmQGTBAMBlwGgAfYGoAH7BgMBlAGiAaoBogHgAQMBkwGgAYgBoAGNAQMBkgGgAVOgAVoDAZEBoAFloAFzAwGPAaABygGgAbEGAwGOAaUBJaUBUwMBigGnARunAZgCAwGLAaoBMKoBPgMBhwGwAR2zASgCAX7hAULhAWgCAXHeAUPeAVACAW/kASXkAUkCAVjmARvvASYCAWfyARuDAiYCAVuLAkGLAl8CAVaIAkKIAkwCAVSOAk2OAloCAVGOArYBjgLCAQIBT5QCQZQCRgIBTJECQpECRQIBSqACKaACPwIBM6ICH7MCKgIBNrsCRbsCTAIBMLgCRrgCSwIBLskCKckCPAIBFMsCH+8CKgIBF/cCRfcCTAIBEfQCRvQCSQIBD6cBjgGnAZUCAwGMAbEBH7EB4wEDAYMBsgEfsgHjAQIBf+cBHe4BJgIBaPMBHfoBJgIBYfsBHYICJgIBXKMCIaoCKgIBPKsCIbICKgIBN8wCIe4CLAIBGLEBVrEBZwMBhQGxAcMBsQHgAQMBhAGyAVayAWcDAYEBsgHDAbIB4AEDAYAB7AFI7AGFAQIBa+kBSekBVgIBafgBSPgBhQECAWT1AUn1AVYCAWKAAkiAAmICAV/9AUn9AVYCAV2oAkuoAlECAT+lAkylAlYCAT2wAkuwAlACATqtAkytAlYCATjOAlLOAmECARnQAiPlAigCAR7mAiPtAiwCARrQAjHQAkACAR/SAifZAjACASXcAifjAjACASHrAk7rArUBAgEd6AJP6AJeAgEb1wJS1wJUAgEo1AJT1AJgAgEm4QJS4QJWAgEk3gJT3gJgAgEi</sads:DebugSymbol.Symbol>
+    <x:Reference>__ReferenceID11</x:Reference>
+    <sads:DebugSymbol.Symbol>dz5DOlxVc2Vyc1xhbmhvdmVcRG9jdW1lbnRzXEdpdEh1YlxSUEFcVGhvbWFzQ2hhbGxlbmdlXE1haW4ueGFtbIsBQAP2Aw8CAQFIOEhVAgEHST1JUwIBBk0+TVUCAQVQNFB/AgEEUTRRowECAQNUNFRQAgECWQmPARUDAa8BkgENzwEeAgF+1AEVlAMgAgEOlwMZngMiAgEKoQMdoQPnAwIBCFwPYCADAb0BYkFiqQEDAbwBdR918QEDAbkBZEVkrQEDAbgBZklmsgEDAbcBaR9wKAMBsAGSAc8BkgHzAQMBqwGYARPMAR4CAX/XAUXXAUsCAQ/bARfiASACAXrjARfqASACAXbrAReuAh8CAUevAhfXAiQCAS/YAheTAyQCARCcA0ucA+0CAgENmQNMmQNVAgELoQOOAaED5AMCAQlclgFcoAEDAcEBXjteRQMBvwFcpwFcswEDAb4BdVt1agMBuwF10AF13wEDAboBbkpumAEDAbMBa0trXQMBsQGZARWgAR4DAacBoQEVygEgAwGBAcsBFcsBfAMBgAHgAUHgAVQCAX3dAULdAUkCAXvoAUHoAUICAXnlAULlAUUCAXfsARmtAiQCAUvrAVLrAWICAUivAokBrwKWAQIBRbUCHdQCKAIBMNgCiQHYApYBAgEt3gIdkAMoAgERngFBngFGAwGqAZsBQpsBTAMBqAGiARfJASIDAYIB8AFJ8AFMAgFM8gEb+QEkAgFy+gEbmwIgAgFbnAIbowIkAgFXpAIbpALJAQIBUqUCG6wCJAIBTbYCH8sCJAIBNswCH9MCKAIBMd8CH4cDJAIBF4gDH48DKAIBEqMBGacBKgMBnwGoARmsASoDAZcBrQEZuwEeAwGPAbwBGcgBKQMBgwH3AUb3AWwCAXX0AUf0AVQCAXP6ASn6AU0CAVz8AR+FAioCAWuIAh+ZAioCAV+hAkWhAmMCAVqeAkaeAlACAVikAlGkAl4CAVWkAroBpALGAQIBU6oCRaoCSgIBUKcCRqcCSQIBTrYCLbYCQwIBN7gCI8kCLgIBOtECSdECUAIBNM4CSs4CTwIBMt8CLd8CQAIBGOECI4UDLgIBG40DSY0DUAIBFYoDSooDTQIBE6MB2QSjAd4EAwGmAaUBrAGlAeIBAwGlAaMBhgGjAYsBAwGkAaMBVaMBXAMBowGjAWejAXEDAaEBowHEAaMBlQQDAaABqAH4BqgB/QYDAZ4BqgGsAaoB4gEDAZ0BqAGKAagBjwEDAZwBqAFVqAFcAwGbAagBZ6gBdQMBmQGoAcwBqAGzBgMBmAGtASetAVUDAZABrwEdrwGaAgMBlQGyAR25ASYDAZEBvAEyvAFAAwGNAcIBH8UBKgMBhAH9ASGEAioCAWyJAiGQAioCAWWRAiGYAioCAWC5AiXAAi4CAUDBAiXIAi4CATviAiWEAzACARyvAZABrwGXAgMBlgG3AUm3AU0DAZQBtAFKtAFUAwGSAcMBIcMB5QEDAYkBxAEhxAHlAQMBhQGCAkyCAokBAgFv/wFN/wFaAgFtjgJMjgKJAQIBaIsCTYsCWgIBZpYCTJYCZgIBY5MCTZMCWgIBYb4CT74CVQIBQ7sCULsCWgIBQcYCT8YCVAIBPsMCUMMCWgIBPOQCVuQCZQIBHeYCJ/sCLAIBIvwCJ4MDMAIBHsMBWMMBaQMBiwHDAcUBwwHiAQMBigHEAVjEAWkDAYcBxAHFAcQB4gEDAYYB5gI15gJEAgEj6AIr7wI0AgEp8gIr+QI0AgElgQNSgQO5AQIBIf4CU/4CYgIBH+0CVu0CWAIBLOoCV+oCZAIBKvcCVvcCWgIBKPQCV/QCZAIBJg==</sads:DebugSymbol.Symbol>
   </Flowchart>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -632,17 +595,12 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ExtractData_5" sap:VirtualizedContainerService.HintSize="314,106" />
-      <sap2010:ViewStateData Id="Sequence_20" sap:VirtualizedContainerService.HintSize="486,230">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ExtractData_10" sap:VirtualizedContainerService.HintSize="464,106" />
+      <sap2010:ViewStateData Id="Assign_33" sap:VirtualizedContainerService.HintSize="625,60" />
+      <sap2010:ViewStateData Id="ExtractData_5" sap:VirtualizedContainerService.HintSize="581,106" />
+      <sap2010:ViewStateData Id="ExtractData_10" sap:VirtualizedContainerService.HintSize="581,106" />
       <sap2010:ViewStateData Id="LogMessage_15" sap:VirtualizedContainerService.HintSize="314,91" />
-      <sap2010:ViewStateData Id="If_5" sap:VirtualizedContainerService.HintSize="464,238">
+      <sap2010:ViewStateData Id="Assign_32" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="If_5" sap:VirtualizedContainerService.HintSize="581,238">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -659,15 +617,23 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ForEachRow_2" sap:VirtualizedContainerService.HintSize="464,355" />
-      <sap2010:ViewStateData Id="Sequence_36" sap:VirtualizedContainerService.HintSize="486,903">
+      <sap2010:ViewStateData Id="ForEachRow_2" sap:VirtualizedContainerService.HintSize="581,355" />
+      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="603,1049">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="508,1297">
+      <sap2010:ViewStateData Id="Sequence_40" sap:VirtualizedContainerService.HintSize="625,1173">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="CloseTab_1" sap:VirtualizedContainerService.HintSize="625,22" />
+      <sap2010:ViewStateData Id="Sequence_42" sap:VirtualizedContainerService.HintSize="647,1459">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -803,6 +769,13 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_29" sap:VirtualizedContainerService.HintSize="242,60">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="LogMessage_14" sap:VirtualizedContainerService.HintSize="200,51">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -813,99 +786,57 @@
       <sap2010:ViewStateData Id="FlowStep_34">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">490,534.02</av:Point>
+            <av:Point x:Key="ShapeLocation">470,704.5</av:Point>
             <av:Size x:Key="ShapeSize">200,51</av:Size>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_35">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">189,580</av:Point>
+            <av:Size x:Key="ShapeSize">242,60</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">310,640 310,670 570,670 570,704.5</av:PointCollection>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="FlowStep_28">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">300,444.5</av:Point>
+            <av:Point x:Key="ShapeLocation">210,454.5</av:Point>
             <av:Size x:Key="ShapeSize">200,51</av:Size>
-            <av:PointCollection x:Key="ConnectorLocation">400,495.5 400,525.5 590,525.5 590,534.02</av:PointCollection>
+            <av:PointCollection x:Key="ConnectorLocation">310,505.5 310,580</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowDecision_5" sap:VirtualizedContainerService.HintSize="85,87">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <av:Point x:Key="ShapeLocation">257.5,316.5</av:Point>
+            <av:Size x:Key="ShapeSize">85,87</av:Size>
+            <x:String x:Key="FalseLabel">Error</x:String>
+            <x:String x:Key="TrueLabel">Success</x:String>
+            <av:PointCollection x:Key="FalseConnector">342.5,360 430,360 430,250 400,250</av:PointCollection>
+            <av:PointCollection x:Key="TrueConnector">257.5,360 227.5,360 227.5,424.5 310,424.5 310,454.5</av:PointCollection>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="FlowStep_2">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">10,314.5</av:Point>
+            <av:Point x:Key="ShapeLocation">200,224.5</av:Point>
             <av:Size x:Key="ShapeSize">200,51</av:Size>
-            <av:PointCollection x:Key="ConnectorLocation">110,365.5 110,395.5 400,395.5 400,444.5</av:PointCollection>
+            <av:PointCollection x:Key="ConnectorLocation">300,275.5 300,316.5</av:PointCollection>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="FlowStep_39">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">310,174.5</av:Point>
+            <av:Point x:Key="ShapeLocation">200,124.5</av:Point>
             <av:Size x:Key="ShapeSize">200,51</av:Size>
-            <av:PointCollection x:Key="ConnectorLocation">410,225.5 410,255.5 110,255.5 110,314.5</av:PointCollection>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="InputDialog_1" sap:VirtualizedContainerService.HintSize="200,51">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Assign_1" sap:VirtualizedContainerService.HintSize="242,60">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FlowStep_5">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">9,90</av:Point>
-            <av:Size x:Key="ShapeSize">242,60</av:Size>
-            <av:PointCollection x:Key="ConnectorLocation">130,150 130,180 110,180 110,314.5</av:PointCollection>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FlowStep_4">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">10,14.5</av:Point>
-            <av:Size x:Key="ShapeSize">200,51</av:Size>
-            <av:PointCollection x:Key="ConnectorLocation">110,65.5 110,90 130,90</av:PointCollection>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="InvokeCode_1" sap:VirtualizedContainerService.HintSize="200,51">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FlowStep_16">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">610,824.5</av:Point>
-            <av:Size x:Key="ShapeSize">200,51</av:Size>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="LogMessage_2" sap:VirtualizedContainerService.HintSize="314,91" />
-      <sap2010:ViewStateData Id="Sequence_11" sap:VirtualizedContainerService.HintSize="336,215">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ForEach`1_2" sap:VirtualizedContainerService.HintSize="200,51" />
-      <sap2010:ViewStateData Id="FlowStep_23">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">310,874.5</av:Point>
-            <av:Size x:Key="ShapeSize">200,51</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">300,175.5 300,224.5</av:PointCollection>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
@@ -952,9 +883,8 @@
       <sap2010:ViewStateData Id="FlowStep_30">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">560,264.5</av:Point>
+            <av:Point x:Key="ShapeLocation">660,384.5</av:Point>
             <av:Size x:Key="ShapeSize">200,51</av:Size>
-            <av:PointCollection x:Key="ConnectorLocation">660,315.5 660,345.5 400,345.5 400,444.5</av:PointCollection>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
@@ -968,52 +898,7 @@
       <sap2010:ViewStateData Id="FlowStep_33">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">290,634.02</av:Point>
-            <av:Size x:Key="ShapeSize">200,51</av:Size>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Assign_29" sap:VirtualizedContainerService.HintSize="242,60">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FlowStep_35">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">238.895,540</av:Point>
-            <av:Size x:Key="ShapeSize">242,60</av:Size>
-            <av:PointCollection x:Key="ConnectorLocation">359.895,600 359.895,630 390,630 390,634.02</av:PointCollection>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="InputDialog_2" sap:VirtualizedContainerService.HintSize="314,92">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Assign_30" sap:VirtualizedContainerService.HintSize="314,60">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_38" sap:VirtualizedContainerService.HintSize="200,51">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FlowStep_36">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">610,64.02</av:Point>
+            <av:Point x:Key="ShapeLocation">240,774.5</av:Point>
             <av:Size x:Key="ShapeSize">200,51</av:Size>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
@@ -1049,24 +934,24 @@
       <sap2010:ViewStateData Id="FlowStep_42">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">0,544.5</av:Point>
+            <av:Point x:Key="ShapeLocation">10,794.5</av:Point>
             <av:Size x:Key="ShapeSize">200,51</av:Size>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Flowchart_1" sap:VirtualizedContainerService.HintSize="865,1062">
+      <sap2010:ViewStateData Id="Flowchart_1" sap:VirtualizedContainerService.HintSize="886,930">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">False</x:Boolean>
             <av:Point x:Key="ShapeLocation">270,2.5</av:Point>
             <av:Size x:Key="ShapeSize">60,75</av:Size>
-            <av:PointCollection x:Key="ConnectorLocation">300,77.5 300,107.5 410,107.5 410,174.5</av:PointCollection>
-            <x:Double x:Key="Height">1025.5</x:Double>
-            <x:Double x:Key="Width">851</x:Double>
+            <av:PointCollection x:Key="ConnectorLocation">300,77.5 300,124.5</av:PointCollection>
+            <x:Double x:Key="Height">894.40000000000009</x:Double>
+            <x:Double x:Key="Width">872</x:Double>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Main_1" sap:VirtualizedContainerService.HintSize="905,1142" />
+      <sap2010:ViewStateData Id="Main_1" sap:VirtualizedContainerService.HintSize="777,766" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
