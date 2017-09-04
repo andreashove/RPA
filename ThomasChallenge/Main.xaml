@@ -84,7 +84,7 @@
       <Variable x:TypeArguments="x:String" Default="andreas.hove@capgemini.com" Name="recipient" />
     </Flowchart.Variables>
     <Flowchart.StartNode>
-      <FlowStep x:Name="__ReferenceID13" sap2010:WorkflowViewState.IdRef="FlowStep_39">
+      <FlowStep x:Name="__ReferenceID11" sap2010:WorkflowViewState.IdRef="FlowStep_39">
         <Flowchart DisplayName="Get date from user" sap2010:WorkflowViewState.IdRef="Flowchart_2">
           <Flowchart.StartNode>
             <FlowStep x:Name="__ReferenceID0" sap2010:WorkflowViewState.IdRef="FlowStep_37">
@@ -186,7 +186,7 @@
               </ui:OpenBrowser.Body>
             </ui:OpenBrowser>
             <FlowStep.Next>
-              <FlowStep x:Name="__ReferenceID10" sap2010:WorkflowViewState.IdRef="FlowStep_28">
+              <FlowStep x:Name="__ReferenceID8" sap2010:WorkflowViewState.IdRef="FlowStep_28">
                 <Sequence DisplayName="Find lowest price" sap2010:WorkflowViewState.IdRef="Sequence_13">
                   <Sequence.Variables>
                     <Variable x:TypeArguments="x:Int32" Name="ind" />
@@ -381,7 +381,7 @@
                   </ui:ForEach>
                 </Sequence>
                 <FlowStep.Next>
-                  <FlowStep x:Name="__ReferenceID11" sap2010:WorkflowViewState.IdRef="FlowStep_34">
+                  <FlowStep x:Name="__ReferenceID9" sap2010:WorkflowViewState.IdRef="FlowStep_34">
                     <ui:LogMessage DisplayName="Log message" sap2010:WorkflowViewState.IdRef="LogMessage_14" Level="Info" Message="[&quot;Cheapest ticket(s) for &quot;+chosDate+&quot;: &quot;+Environment.NewLine+messageString+Environment.NewLine+&quot;Order at: &quot;+URLstart+stringChosenDate+URLend+Environment.NewLine+Environment.NewLine+&quot;----------------------------------------------&quot;+Environment.NewLine+&quot;Brought to you by HoveRoboServices AS&quot;]" />
                   </FlowStep>
                 </FlowStep.Next>
@@ -415,31 +415,6 @@
       </FlowStep.Next>
     </FlowStep>
     <x:Reference>__ReferenceID7</x:Reference>
-    <FlowStep sap2010:WorkflowViewState.IdRef="FlowStep_7">
-      <ui:TakeScreenshot WaitBefore="{x:Null}" DisplayName="Take screenshot 'TABLE  bookOutwardFlight'" sap2010:WorkflowViewState.IdRef="TakeScreenshot_1" Screenshot="[scrnsht]">
-        <ui:TakeScreenshot.Target>
-          <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="7f334a464b07eb2e95213b32b6bb43fb" Selector="&lt;html app='chrome.exe' title='Billige flybilletter og flyreiser – søk og bestill fly - SAS' /&gt;&lt;webctrl id='bookOutwardFlight' tag='TABLE' /&gt;" WaitForReady="INTERACTIVE" />
-        </ui:TakeScreenshot.Target>
-      </ui:TakeScreenshot>
-      <FlowStep.Next>
-        <FlowStep x:Name="__ReferenceID9" sap2010:WorkflowViewState.IdRef="FlowStep_11">
-          <ui:SaveImage DisplayName="Save price info" FileName="pris.png" sap2010:WorkflowViewState.IdRef="SaveImage_1" Image="[scrnsht]" />
-          <FlowStep.Next>
-            <FlowStep x:Name="__ReferenceID8" sap2010:WorkflowViewState.IdRef="FlowStep_10">
-              <ui:SendOutlookMail Account="{x:Null}" Bcc="{x:Null}" Cc="{x:Null}" MailMessage="{x:Null}" TimeoutMS="{x:Null}" Body="Order tickets: https://www.sas.no/#/booking/select-flights?org=BGO&amp;dest=OSL&amp;out=20170916&amp;pos=NO&amp;lng=GB&amp;isCartOpen=false&amp;bookingFlow=REVENUE&amp;adt=1&amp;channel=web&amp;view=upsell" DisplayName="Send Outlook Mail Message" sap2010:WorkflowViewState.IdRef="SendOutlookMail_1" IsBodyHtml="False" IsDraft="False" Subject="[&quot;Flybilletter &quot;+chosDate]" To="thomas.transeth@capgemini.com">
-                <ui:SendOutlookMail.Files>
-                  <scg:List x:TypeArguments="InArgument(x:String)" Capacity="4">
-                    <InArgument x:TypeArguments="x:String">pris.png</InArgument>
-                  </scg:List>
-                </ui:SendOutlookMail.Files>
-              </ui:SendOutlookMail>
-            </FlowStep>
-          </FlowStep.Next>
-        </FlowStep>
-      </FlowStep.Next>
-    </FlowStep>
-    <x:Reference>__ReferenceID8</x:Reference>
-    <x:Reference>__ReferenceID9</x:Reference>
     <FlowStep sap2010:WorkflowViewState.IdRef="FlowStep_16">
       <ui:InvokeCode ContinueOnError="{x:Null}" Code="outp = MsgBox(Regex.Replace(s, &quot;[^a-zA-Z ]&quot;, &quot;&quot;))" DisplayName="Invoke code" sap2010:WorkflowViewState.IdRef="InvokeCode_1">
         <ui:InvokeCode.Arguments>
@@ -462,9 +437,9 @@
         </ui:ForEach.Body>
       </ui:ForEach>
     </FlowStep>
-    <x:Reference>__ReferenceID10</x:Reference>
+    <x:Reference>__ReferenceID8</x:Reference>
     <FlowStep sap2010:WorkflowViewState.IdRef="FlowStep_30">
-      <ui:BrowserScope Browser="{x:Null}" SearchScope="{x:Null}" TimeoutMS="{x:Null}" UiBrowser="{x:Null}" BrowserType="Chrome" DisplayName="(AttachedBrowser) Get data from SAS.no" sap2010:WorkflowViewState.IdRef="BrowserScope_4" InformativeScreenshot="c1a041b9b4f28db5f366853b228b68e7" Selector="&lt;html app='chrome.exe' title='Billige flybilletter og flyreiser – søk og bestill fly - SAS' /&gt;">
+      <ui:BrowserScope Browser="{x:Null}" SearchScope="{x:Null}" TimeoutMS="{x:Null}" UiBrowser="{x:Null}" BrowserType="Chrome" DisplayName="(DEBUG) Get data from SAS.no" sap2010:WorkflowViewState.IdRef="BrowserScope_4" InformativeScreenshot="c1a041b9b4f28db5f366853b228b68e7" Selector="&lt;html app='chrome.exe' title='Billige flybilletter og flyreiser – søk og bestill fly - SAS' /&gt;">
         <ui:BrowserScope.Body>
           <ActivityAction x:TypeArguments="x:Object">
             <ActivityAction.Argument>
@@ -503,17 +478,17 @@
         </ui:BrowserScope.Body>
       </ui:BrowserScope>
       <FlowStep.Next>
-        <x:Reference>__ReferenceID10</x:Reference>
+        <x:Reference>__ReferenceID8</x:Reference>
       </FlowStep.Next>
     </FlowStep>
-    <FlowStep x:Name="__ReferenceID12" sap2010:WorkflowViewState.IdRef="FlowStep_33">
-      <ui:SendOutlookMail Account="{x:Null}" Bcc="{x:Null}" Cc="{x:Null}" MailMessage="{x:Null}" TimeoutMS="{x:Null}" Body="[message]" DisplayName="Send Outlook Mail Message" sap2010:WorkflowViewState.IdRef="SendOutlookMail_2" IsBodyHtml="False" IsDraft="False" Subject="[&quot;Flights &quot;+chosDate]" To="benjamin.rindaroy@capgemini.com">
+    <FlowStep x:Name="__ReferenceID10" sap2010:WorkflowViewState.IdRef="FlowStep_33">
+      <ui:SendOutlookMail Account="{x:Null}" Bcc="{x:Null}" Cc="{x:Null}" MailMessage="{x:Null}" TimeoutMS="{x:Null}" Body="[message]" DisplayName="Send Outlook Mail Message" sap2010:WorkflowViewState.IdRef="SendOutlookMail_2" IsBodyHtml="False" IsDraft="False" Subject="[&quot;Flights &quot;+chosDate]" To="[recipient]">
         <ui:SendOutlookMail.Files>
           <scg:List x:TypeArguments="InArgument(x:String)" Capacity="0" />
         </ui:SendOutlookMail.Files>
       </ui:SendOutlookMail>
     </FlowStep>
-    <x:Reference>__ReferenceID11</x:Reference>
+    <x:Reference>__ReferenceID9</x:Reference>
     <FlowStep sap2010:WorkflowViewState.IdRef="FlowStep_35">
       <Assign sap2010:WorkflowViewState.IdRef="Assign_29">
         <Assign.To>
@@ -524,7 +499,7 @@
         </Assign.Value>
       </Assign>
       <FlowStep.Next>
-        <x:Reference>__ReferenceID12</x:Reference>
+        <x:Reference>__ReferenceID10</x:Reference>
       </FlowStep.Next>
     </FlowStep>
     <FlowStep sap2010:WorkflowViewState.IdRef="FlowStep_36">
@@ -544,8 +519,23 @@
         </Assign>
       </Sequence>
     </FlowStep>
-    <x:Reference>__ReferenceID13</x:Reference>
-    <sads:DebugSymbol.Symbol>dzpDOlxVc2Vyc1xhbmhvdmVcRG9jdW1lbnRzXFVpUGF0aFxUaG9tYXNDaGFsbGVuZ2VcTWFpbi54YW1sgQFAA6UEDwIBAUg4SFUCAQdJPUlTAgEGTT5NVQIBBVA0UH8CAQRRNFGjAQIBA1Q0VFACAQJYCY4BFQMBogGRAQ27AR4CAXq+ARH+AhwCAQqBAxWBA9wDAgEIWw9fIAMBsAFhQWGpAQMBrwF0H3TxAQMBrAFjRWOtAQMBqwFlSWWyAQMBqgFoH28oAwGjAZEBzwGRAfMBAwGeAZcBE7gBHgIBe8EBQcEBRwIBC8UBE8wBHAIBds0BE9QBHAIBctUBE5gCGwIBQ5kCE8ECIAIBK8ICE/0CIAIBDIEDgwGBA9kDAgEJW5YBW6ABAwG0AV07XUUDAbIBW6cBW7MBAwGxAXRbdGoDAa4BdNABdN8BAwGtAW1KbZgBAwGmAWpLal0DAaQBmAEVngEgAwGVAZ8BFbcBIAIBfMoBPcoBUAIBeccBPscBRQIBd9IBPdIBPgIBdc8BPs8BQQIBc9YBFZcCIAIBR9UBTtUBXgIBRJkChQGZApIBAgFBnwIZvgIkAgEswgKFAcICkgECASnIAhn6AiQCAQ2ZARedASgDAZYBoAEXpAEoAwGNAaUBF6kBHAMBiQGqARe2AScCAX3aAUXaAUgCAUjcARfjASACAW7kAReFAhwCAVeGAheNAiACAVOOAheOAsUBAgFOjwIXlgIgAgFJoAIbtQIgAgEytgIbvQIkAgEtyQIb8QIgAgET8gIb+QIkAgEOmQHXBJkB3AQDAZ0BmwGqAZsB4AEDAZwBmQGEAZkBiQEDAZsBmQFTmQFaAwGaAZkBZZkBbwMBmAGZAcIBmQGTBAMBlwGgAfYGoAH7BgMBlAGiAaoBogHgAQMBkwGgAYgBoAGNAQMBkgGgAVOgAVoDAZEBoAFloAFzAwGPAaABygGgAbEGAwGOAaUBJaUBUwMBigGnARunAZgCAwGLAaoBMKoBPgMBhwGwAR2zASgCAX7hAULhAWgCAXHeAUPeAVACAW/kASXkAUkCAVjmARvvASYCAWfyARuDAiYCAVuLAkGLAl8CAVaIAkKIAkwCAVSOAk2OAloCAVGOArYBjgLCAQIBT5QCQZQCRgIBTJECQpECRQIBSqACKaACPwIBM6ICH7MCKgIBNrsCRbsCTAIBMLgCRrgCSwIBLskCKckCPAIBFMsCH+8CKgIBF/cCRfcCTAIBEfQCRvQCSQIBD6cBjgGnAZUCAwGMAbEBH7EB4wEDAYMBsgEfsgHjAQIBf+cBHe4BJgIBaPMBHfoBJgIBYfsBHYICJgIBXKMCIaoCKgIBPKsCIbICKgIBN8wCIe4CLAIBGLEBVrEBZwMBhQGxAcMBsQHgAQMBhAGyAVayAWcDAYEBsgHDAbIB4AEDAYAB7AFI7AGFAQIBa+kBSekBVgIBafgBSPgBhQECAWT1AUn1AVYCAWKAAkiAAmICAV/9AUn9AVYCAV2oAkuoAlECAT+lAkylAlYCAT2wAkuwAlACATqtAkytAlYCATjOAlLOAmECARnQAiPlAigCAR7mAiPtAiwCARrQAjHQAkACAR/SAifZAjACASXcAifjAjACASHrAk7rArUBAgEd6AJP6AJeAgEb1wJS1wJUAgEo1AJT1AJgAgEm4QJS4QJWAgEk3gJT3gJgAgEi</sads:DebugSymbol.Symbol>
+    <x:Reference>__ReferenceID11</x:Reference>
+    <FlowStep sap2010:WorkflowViewState.IdRef="FlowStep_42">
+      <Sequence DisplayName="Screenshot'n'email" sap2010:WorkflowViewState.IdRef="Sequence_39">
+        <ui:TakeScreenshot WaitBefore="{x:Null}" DisplayName="Take screenshot 'TABLE  bookOutwardFlight'" sap2010:WorkflowViewState.IdRef="TakeScreenshot_2" Screenshot="[scrnsht]">
+          <ui:TakeScreenshot.Target>
+            <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="7f334a464b07eb2e95213b32b6bb43fb" Selector="&lt;html app='chrome.exe' title='Billige flybilletter og flyreiser – søk og bestill fly - SAS' /&gt;&lt;webctrl id='bookOutwardFlight' tag='TABLE' /&gt;" WaitForReady="INTERACTIVE" />
+          </ui:TakeScreenshot.Target>
+        </ui:TakeScreenshot>
+        <ui:SaveImage DisplayName="Save price info" FileName="pris.png" sap2010:WorkflowViewState.IdRef="SaveImage_2" Image="[scrnsht]" />
+        <ui:SendOutlookMail Account="{x:Null}" Bcc="{x:Null}" Cc="{x:Null}" MailMessage="{x:Null}" TimeoutMS="{x:Null}" Body="[message]" DisplayName="Send Outlook Mail Message" sap2010:WorkflowViewState.IdRef="SendOutlookMail_4" IsBodyHtml="False" IsDraft="False" Subject="[&quot;Flights &quot;+chosDate]" To="[recipient]">
+          <ui:SendOutlookMail.Files>
+            <scg:List x:TypeArguments="InArgument(x:String)" Capacity="0" />
+          </ui:SendOutlookMail.Files>
+        </ui:SendOutlookMail>
+      </Sequence>
+    </FlowStep>
+    <sads:DebugSymbol.Symbol>dzpDOlxVc2Vyc1xhbmhvdmVcRG9jdW1lbnRzXFVpUGF0aFxUaG9tYXNDaGFsbGVuZ2VcTWFpbi54YW1sgQFAA5sEDwIBAUg4SFUCAQdJPUlTAgEGTT5NVQIBBVA0UH8CAQRRNFGjAQIBA1Q0VFACAQJYCY4BFQMBogGRAQ27AR4CAXq+ARH+AhwCAQqBAxWBA9wDAgEIWw9fIAMBsAFhQWGpAQMBrwF0H3TxAQMBrAFjRWOtAQMBqwFlSWWyAQMBqgFoH28oAwGjAZEBzwGRAfMBAwGeAZcBE7gBHgIBe8EBQcEBRwIBC8UBE8wBHAIBds0BE9QBHAIBctUBE5gCGwIBQ5kCE8ECIAIBK8ICE/0CIAIBDIEDgwGBA9kDAgEJW5YBW6ABAwG0AV07XUUDAbIBW6cBW7MBAwGxAXRbdGoDAa4BdNABdN8BAwGtAW1KbZgBAwGmAWpLal0DAaQBmAEVngEgAwGVAZ8BFbcBIAIBfMoBPcoBUAIBeccBPscBRQIBd9IBPdIBPgIBdc8BPs8BQQIBc9YBFZcCIAIBR9UBTtUBXgIBRJkChQGZApIBAgFBnwIZvgIkAgEswgKFAcICkgECASnIAhn6AiQCAQ2ZARedASgDAZYBoAEXpAEoAwGNAaUBF6kBHAMBiQGqARe2AScCAX3aAUXaAUgCAUjcARfjASACAW7kAReFAhwCAVeGAheNAiACAVOOAheOAsUBAgFOjwIXlgIgAgFJoAIbtQIgAgEytgIbvQIkAgEtyQIb8QIgAgET8gIb+QIkAgEOmQHXBJkB3AQDAZ0BmwGqAZsB4AEDAZwBmQGEAZkBiQEDAZsBmQFTmQFaAwGaAZkBZZkBbwMBmAGZAcIBmQGTBAMBlwGgAfYGoAH7BgMBlAGiAaoBogHgAQMBkwGgAYgBoAGNAQMBkgGgAVOgAVoDAZEBoAFloAFzAwGPAaABygGgAbEGAwGOAaUBJaUBUwMBigGnARunAZgCAwGLAaoBMKoBPgMBhwGwAR2zASgCAX7hAULhAWgCAXHeAUPeAVACAW/kASXkAUkCAVjmARvvASYCAWfyARuDAiYCAVuLAkGLAl8CAVaIAkKIAkwCAVSOAk2OAloCAVGOArYBjgLCAQIBT5QCQZQCRgIBTJECQpECRQIBSqACKaACPwIBM6ICH7MCKgIBNrsCRbsCTAIBMLgCRrgCSwIBLskCKckCPAIBFMsCH+8CKgIBF/cCRfcCTAIBEfQCRvQCSQIBD6cBjgGnAZUCAwGMAbEBH7EB4wEDAYMBsgEfsgHjAQIBf+cBHe4BJgIBaPMBHfoBJgIBYfsBHYICJgIBXKMCIaoCKgIBPKsCIbICKgIBN8wCIe4CLAIBGLEBVrEBZwMBhQGxAcMBsQHgAQMBhAGyAVayAWcDAYEBsgHDAbIB4AEDAYAB7AFI7AGFAQIBa+kBSekBVgIBafgBSPgBhQECAWT1AUn1AVYCAWKAAkiAAmICAV/9AUn9AVYCAV2oAkuoAlECAT+lAkylAlYCAT2wAkuwAlACATqtAkytAlYCATjOAlLOAmECARnQAiPlAigCAR7mAiPtAiwCARrQAjHQAkACAR/SAifZAjACASXcAifjAjACASHrAk7rArUBAgEd6AJP6AJeAgEb1wJS1wJUAgEo1AJT1AJgAgEm4QJS4QJWAgEk3gJT3gJgAgEi</sads:DebugSymbol.Symbol>
   </Flowchart>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -887,53 +877,6 @@
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TakeScreenshot_1" sap:VirtualizedContainerService.HintSize="200,51">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="SaveImage_1" sap:VirtualizedContainerService.HintSize="200,51">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="SendOutlookMail_1" sap:VirtualizedContainerService.HintSize="200,51">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FlowStep_10">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">0,624.5</av:Point>
-            <av:Size x:Key="ShapeSize">200,51</av:Size>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FlowStep_11">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">0,534.5</av:Point>
-            <av:Size x:Key="ShapeSize">200,51</av:Size>
-            <av:PointCollection x:Key="ConnectorLocation">100,585.5 100,624.5</av:PointCollection>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FlowStep_7">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">0,454.5</av:Point>
-            <av:Size x:Key="ShapeSize">200,51</av:Size>
-            <av:PointCollection x:Key="ConnectorLocation">100,505.5 100,534.5</av:PointCollection>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
       <sap2010:ViewStateData Id="InvokeCode_1" sap:VirtualizedContainerService.HintSize="200,51">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -1009,9 +952,9 @@
       <sap2010:ViewStateData Id="FlowStep_30">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">290,314.5</av:Point>
+            <av:Point x:Key="ShapeLocation">560,264.5</av:Point>
             <av:Size x:Key="ShapeSize">200,51</av:Size>
-            <av:PointCollection x:Key="ConnectorLocation">390,365.5 390,395.5 400,395.5 400,444.5</av:PointCollection>
+            <av:PointCollection x:Key="ConnectorLocation">660,315.5 660,345.5 400,345.5 400,444.5</av:PointCollection>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
@@ -1071,6 +1014,42 @@
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">610,64.02</av:Point>
+            <av:Size x:Key="ShapeSize">200,51</av:Size>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="TakeScreenshot_2" sap:VirtualizedContainerService.HintSize="314,106">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="SaveImage_2" sap:VirtualizedContainerService.HintSize="314,92">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="SendOutlookMail_4" sap:VirtualizedContainerService.HintSize="314,145">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_39" sap:VirtualizedContainerService.HintSize="200,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_42">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">0,544.5</av:Point>
             <av:Size x:Key="ShapeSize">200,51</av:Size>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
