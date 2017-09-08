@@ -69,9 +69,16 @@
       <Variable x:TypeArguments="sd:DataTable" Default="[New System.Data.DataTable]" Name="usersDT" />
       <Variable x:TypeArguments="scg:List(x:String)" Name="names" />
       <Variable x:TypeArguments="x:Boolean" Default="True" Name="finished" />
+      <Variable x:TypeArguments="x:String" Default="andreas.hove@capgemini.com" Name="recipient" />
+      <Variable x:TypeArguments="x:String" Default="TicketPRO 2000 - Open User Tickets - " Name="reportTitle" />
+      <Variable x:TypeArguments="ui:GenericValue" Name="emailMessage" />
+      <Variable x:TypeArguments="x:String" Name="stringDepartments" />
+      <Variable x:TypeArguments="x:String" Name="strDepartments" />
+      <Variable x:TypeArguments="s:String[]" Name="arrayDepartments" />
+      <Variable x:TypeArguments="x:Int32" Default="2" Name="currentDepartment" />
     </Flowchart.Variables>
     <Flowchart.StartNode>
-      <FlowStep x:Name="__ReferenceID1" sap2010:WorkflowViewState.IdRef="FlowStep_5">
+      <FlowStep x:Name="__ReferenceID2" sap2010:WorkflowViewState.IdRef="FlowStep_5">
         <Sequence DisplayName="Get user names" sap2010:WorkflowViewState.IdRef="Sequence_21">
           <ui:BrowserScope Browser="{x:Null}" SearchScope="{x:Null}" TimeoutMS="{x:Null}" UiBrowser="{x:Null}" BrowserType="Chrome" DisplayName="Attach Browser 'TicketPRO Page'" sap2010:WorkflowViewState.IdRef="BrowserScope_8" InformativeScreenshot="0b8a8e945f6f9e9c48ab322d390242f9" Selector="&lt;html app='chrome.exe' title='TicketPRO 2000' /&gt;">
             <ui:BrowserScope.Body>
@@ -144,7 +151,6 @@
                             </Assign.Value>
                           </Assign>
                           <AddToCollection x:TypeArguments="x:String" Collection="[names]" DisplayName="Add to items" sap2010:WorkflowViewState.IdRef="AddToCollection`1_6" Item="[item]" />
-                          <ui:LogMessage DisplayName="Log message" sap2010:WorkflowViewState.IdRef="LogMessage_11" Level="Info" Message="[&quot;item: &quot;+item]" />
                         </Sequence>
                       </ActivityAction>
                     </ui:ForEachRow.Body>
@@ -155,195 +161,272 @@
           </ui:BrowserScope>
         </Sequence>
         <FlowStep.Next>
-          <FlowStep x:Name="__ReferenceID3" sap2010:WorkflowViewState.IdRef="FlowStep_7">
-            <Sequence DisplayName="Select department" sap2010:WorkflowViewState.IdRef="Sequence_39">
-              <ui:BrowserScope Browser="{x:Null}" SearchScope="{x:Null}" TimeoutMS="{x:Null}" UiBrowser="{x:Null}" BrowserType="Chrome" DisplayName="Attach Browser 'TicketPRO Page'" sap2010:WorkflowViewState.IdRef="BrowserScope_15" InformativeScreenshot="215c3a5e4d5435672e0c35a0c4c0d011" Selector="&lt;html app='chrome.exe' title='TicketPRO 2000' /&gt;">
-                <ui:BrowserScope.Body>
-                  <ActivityAction x:TypeArguments="x:Object">
-                    <ActivityAction.Argument>
-                      <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
-                    </ActivityAction.Argument>
-                    <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_40">
-                      <ui:SelectItem ContinueOnError="{x:Null}" DelayAfter="{x:Null}" DelayBefore="{x:Null}" DisplayName="Select item 'SELECT  active-departme...'" sap2010:WorkflowViewState.IdRef="SelectItem_1" Item="Customer Service Private">
-                        <ui:SelectItem.Items>
-                          <scg:List x:TypeArguments="x:String" Capacity="4">
-                            <x:String>Select department</x:String>
-                            <x:String>Customer Service Private</x:String>
-                            <x:String>Customer Service Business</x:String>
-                            <x:String>Customer Service Internal</x:String>
-                          </scg:List>
-                        </ui:SelectItem.Items>
-                        <ui:SelectItem.Target>
-                          <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="e7fcbdfba9c8621b66e6e9140f0782f8" Selector="&lt;webctrl tag='SELECT' /&gt;" WaitForReady="COMPLETE" />
-                        </ui:SelectItem.Target>
-                      </ui:SelectItem>
-                    </Sequence>
-                  </ActivityAction>
-                </ui:BrowserScope.Body>
-              </ui:BrowserScope>
-              <ui:LogMessage DisplayName="Log message" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="Department selected" />
+          <FlowStep x:Name="__ReferenceID9" sap2010:WorkflowViewState.IdRef="FlowStep_25">
+            <Sequence DisplayName="Get departments" sap2010:WorkflowViewState.IdRef="Sequence_81">
+              <Sequence.Variables>
+                <Variable x:TypeArguments="x:String" Name="firstele" />
+              </Sequence.Variables>
+              <ui:InjectJsScript InputParameter="{x:Null}" DisplayName="Inject js script 'SELECT  active-departme...'" sap2010:WorkflowViewState.IdRef="InjectJsScript_4" ScriptCode="js\getDepartments.js">
+                <ui:InjectJsScript.ScriptOutput>
+                  <OutArgument x:TypeArguments="x:String">[strDepartments]</OutArgument>
+                </ui:InjectJsScript.ScriptOutput>
+                <ui:InjectJsScript.Target>
+                  <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="598e0593a4bc91a829d5150e410de5cf" Selector="&lt;html app='chrome.exe' title='TicketPRO 2000' /&gt;&lt;webctrl tag='SELECT' /&gt;" WaitForReady="INTERACTIVE" />
+                </ui:InjectJsScript.Target>
+              </ui:InjectJsScript>
+              <Assign sap2010:WorkflowViewState.IdRef="Assign_37">
+                <Assign.To>
+                  <OutArgument x:TypeArguments="s:String[]">[arrayDepartments]</OutArgument>
+                </Assign.To>
+                <Assign.Value>
+                  <InArgument x:TypeArguments="s:String[]">[strDepartments.Split(New Char() {"\"c})]</InArgument>
+                </Assign.Value>
+              </Assign>
             </Sequence>
             <FlowStep.Next>
-              <FlowStep x:Name="__ReferenceID2" sap2010:WorkflowViewState.IdRef="FlowStep_6">
-                <Sequence DisplayName="Get data" sap2010:WorkflowViewState.IdRef="Sequence_38">
-                  <ui:BrowserScope Browser="{x:Null}" SearchScope="{x:Null}" TimeoutMS="{x:Null}" UiBrowser="{x:Null}" BrowserType="Chrome" DisplayName="Attach Browser 'TicketPRO Page'" sap2010:WorkflowViewState.IdRef="BrowserScope_13" InformativeScreenshot="5f33d8f67b18c633ca98222f325755ce" Selector="&lt;html app='chrome.exe' title='TicketPRO 2000' /&gt;">
+              <FlowStep x:Name="__ReferenceID0" sap2010:WorkflowViewState.IdRef="FlowStep_7">
+                <Sequence DisplayName="Select department" sap2010:WorkflowViewState.IdRef="Sequence_39">
+                  <ui:BrowserScope Browser="{x:Null}" SearchScope="{x:Null}" TimeoutMS="{x:Null}" UiBrowser="{x:Null}" BrowserType="Chrome" DisplayName="Attach Browser 'TicketPRO Page'" sap2010:WorkflowViewState.IdRef="BrowserScope_15" InformativeScreenshot="215c3a5e4d5435672e0c35a0c4c0d011" Selector="&lt;html app='chrome.exe' title='TicketPRO 2000' /&gt;">
                     <ui:BrowserScope.Body>
                       <ActivityAction x:TypeArguments="x:Object">
                         <ActivityAction.Argument>
                           <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
                         </ActivityAction.Argument>
-                        <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_35">
-                          <ui:Click DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click 'A  #/queue'" sap2010:WorkflowViewState.IdRef="Click_7" KeyModifiers="None" MouseButton="BTN_LEFT" SendWindowMessages="False" SimulateClick="True">
-                            <ui:Click.CursorPosition>
-                              <ui:CursorPosition OffsetX="36" OffsetY="19" Position="TopLeft" />
-                            </ui:Click.CursorPosition>
-                            <ui:Click.Target>
-                              <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="a1bfbcaa264319321d9ca12ab0ff5435" Selector="&lt;webctrl aaname='Queue' tag='A' /&gt;" WaitForReady="COMPLETE" />
-                            </ui:Click.Target>
-                          </ui:Click>
-                          <ui:ExtractData NextLinkSelector="{x:Null}" ContinueOnError="True" DataTable="[ticketsDT]" DelayBetweenPagesMS="300" DisplayName="Extract Structured Data 'TABLE'" ExtractMetadata="&lt;extract-table get_columns_name='1' get_empty_columns='1' /&gt;" sap2010:WorkflowViewState.IdRef="ExtractData_7" MaxNumberOfResults="100">
-                            <ui:ExtractData.Target>
-                              <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="916d8c61a200ceb8d8b18bb035f5904f" Selector="&lt;webctrl tag='TABLE' /&gt;" WaitForReady="COMPLETE" />
-                            </ui:ExtractData.Target>
-                          </ui:ExtractData>
-                          <ui:AddDataColumn x:TypeArguments="x:Int32" Column="{x:Null}" DefaultValue="{x:Null}" AllowDBNull="True" AutoIncrement="False" ColumnName="OpenTicketsAllTime" DataTable="[usersDT]" DisplayName="Add data column" sap2010:WorkflowViewState.IdRef="AddDataColumn`1_2" MaxLength="100" Unique="False" />
-                          <ui:AddDataColumn x:TypeArguments="x:Int32" Column="{x:Null}" DefaultValue="{x:Null}" AllowDBNull="True" AutoIncrement="False" ColumnName="OpenTicketsWeekly" DataTable="[usersDT]" DisplayName="Add data column" sap2010:WorkflowViewState.IdRef="AddDataColumn`1_3" MaxLength="100" Unique="False" />
+                        <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_40">
+                          <ui:SelectItem ContinueOnError="{x:Null}" DelayAfter="{x:Null}" DelayBefore="{x:Null}" DisplayName="Select item 'SELECT  active-departme...'" sap2010:WorkflowViewState.IdRef="SelectItem_1" Item="[strDepartments(currentDepartment)]">
+                            <ui:SelectItem.Items>
+                              <scg:List x:TypeArguments="x:String" Capacity="4">
+                                <x:String>Select department</x:String>
+                                <x:String>Customer Service Private</x:String>
+                                <x:String>Customer Service Business</x:String>
+                                <x:String>Customer Service Internal</x:String>
+                              </scg:List>
+                            </ui:SelectItem.Items>
+                            <ui:SelectItem.Target>
+                              <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="e7fcbdfba9c8621b66e6e9140f0782f8" Selector="&lt;webctrl tag='SELECT' /&gt;" WaitForReady="COMPLETE" />
+                            </ui:SelectItem.Target>
+                          </ui:SelectItem>
                         </Sequence>
                       </ActivityAction>
                     </ui:BrowserScope.Body>
                   </ui:BrowserScope>
+                  <ui:LogMessage DisplayName="Log message" sap2010:WorkflowViewState.IdRef="LogMessage_1" Level="Info" Message="Department selected" />
                 </Sequence>
                 <FlowStep.Next>
-                  <FlowStep x:Name="__ReferenceID0" sap2010:WorkflowViewState.IdRef="FlowStep_3">
-                    <Sequence DisplayName="Count no. tickets per user" sap2010:WorkflowViewState.IdRef="Sequence_7">
-                      <Sequence.Variables>
-                        <Variable x:TypeArguments="x:Int32" Default="0" Name="matchCount" />
-                      </Sequence.Variables>
-                      <ui:ForEachRow DataTable="[usersDT]" DisplayName="For each row" sap2010:WorkflowViewState.IdRef="ForEachRow_3">
-                        <ui:ForEachRow.Body>
-                          <ActivityAction x:TypeArguments="sd:DataRow">
+                  <FlowStep x:Name="__ReferenceID3" sap2010:WorkflowViewState.IdRef="FlowStep_6">
+                    <Sequence DisplayName="Get data" sap2010:WorkflowViewState.IdRef="Sequence_38">
+                      <ui:BrowserScope Browser="{x:Null}" SearchScope="{x:Null}" TimeoutMS="{x:Null}" UiBrowser="{x:Null}" BrowserType="Chrome" DisplayName="Attach Browser 'TicketPRO Page'" sap2010:WorkflowViewState.IdRef="BrowserScope_13" InformativeScreenshot="5f33d8f67b18c633ca98222f325755ce" Selector="&lt;html app='chrome.exe' title='TicketPRO 2000' /&gt;">
+                        <ui:BrowserScope.Body>
+                          <ActivityAction x:TypeArguments="x:Object">
                             <ActivityAction.Argument>
-                              <DelegateInArgument x:TypeArguments="sd:DataRow" Name="row" />
+                              <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
                             </ActivityAction.Argument>
-                            <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_73">
-                              <Sequence.Variables>
-                                <Variable x:TypeArguments="x:String" Name="currentName" />
-                              </Sequence.Variables>
-                              <Assign sap2010:WorkflowViewState.IdRef="Assign_24">
-                                <Assign.To>
-                                  <OutArgument x:TypeArguments="x:String">[currentName]</OutArgument>
-                                </Assign.To>
-                                <Assign.Value>
-                                  <InArgument x:TypeArguments="x:String">[row("Names").ToString]</InArgument>
-                                </Assign.Value>
-                              </Assign>
-                              <Sequence sap2010:WorkflowViewState.IdRef="Sequence_77">
-                                <Sequence.Variables>
-                                  <Variable x:TypeArguments="x:Int32" Default="0" Name="nameIndex" />
-                                </Sequence.Variables>
-                                <ui:Comment sap2010:WorkflowViewState.IdRef="Comment_3" Text="For each user name we will count the number of tickets" />
-                                <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_76">
-                                  <Sequence.Variables>
-                                    <Variable x:TypeArguments="x:Int32" Name="matchCountWeekly" />
-                                  </Sequence.Variables>
-                                  <Assign sap2010:WorkflowViewState.IdRef="Assign_25">
-                                    <Assign.To>
-                                      <OutArgument x:TypeArguments="x:Int32">[matchCount]</OutArgument>
-                                    </Assign.To>
-                                    <Assign.Value>
-                                      <InArgument x:TypeArguments="x:Int32">0</InArgument>
-                                    </Assign.Value>
-                                  </Assign>
-                                  <Assign sap2010:WorkflowViewState.IdRef="Assign_29">
-                                    <Assign.To>
-                                      <OutArgument x:TypeArguments="x:Int32">[matchCountWeekly]</OutArgument>
-                                    </Assign.To>
-                                    <Assign.Value>
-                                      <InArgument x:TypeArguments="x:Int32">0</InArgument>
-                                    </Assign.Value>
-                                  </Assign>
-                                  <ui:ForEachRow DataTable="[ticketsDT]" DisplayName="For each row" sap2010:WorkflowViewState.IdRef="ForEachRow_4">
-                                    <ui:ForEachRow.Body>
-                                      <ActivityAction x:TypeArguments="sd:DataRow">
-                                        <ActivityAction.Argument>
-                                          <DelegateInArgument x:TypeArguments="sd:DataRow" Name="row" />
-                                        </ActivityAction.Argument>
-                                        <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_75">
-                                          <If Condition="[String.Compare(currentName, row(&quot;Owner&quot;).ToString) = 0]" sap2010:WorkflowViewState.IdRef="If_4">
-                                            <If.Then>
-                                              <Sequence sap2010:WorkflowViewState.IdRef="Sequence_74">
-                                                <Sequence.Variables>
-                                                  <Variable x:TypeArguments="s:DateTime" Default="[DateTime.ParseExact(&quot;21.08.2017&quot;, &quot;dd.MM.yyyy&quot;, CultureInfo.InvariantCulture)]" Name="weekStart" />
-                                                  <Variable x:TypeArguments="s:DateTime" Default="[DateTime.ParseExact(&quot;27.08.2017&quot;, &quot;dd.MM.yyyy&quot;, CultureInfo.InvariantCulture)]" Name="weekEnd" />
-                                                  <Variable x:TypeArguments="s:DateTime" Name="rowDate" />
-                                                </Sequence.Variables>
-                                                <Assign sap2010:WorkflowViewState.IdRef="Assign_26">
-                                                  <Assign.To>
-                                                    <OutArgument x:TypeArguments="x:Int32">[matchCount]</OutArgument>
-                                                  </Assign.To>
-                                                  <Assign.Value>
-                                                    <InArgument x:TypeArguments="x:Int32">[matchCount+1]</InArgument>
-                                                  </Assign.Value>
-                                                </Assign>
-                                                <Assign sap2010:WorkflowViewState.IdRef="Assign_30">
-                                                  <Assign.To>
-                                                    <OutArgument x:TypeArguments="s:DateTime">[rowDate]</OutArgument>
-                                                  </Assign.To>
-                                                  <Assign.Value>
-                                                    <InArgument x:TypeArguments="s:DateTime">[DateTime.ParseExact(row("Created").ToString, "dd.MM.yyyy", CultureInfo.InvariantCulture)]</InArgument>
-                                                  </Assign.Value>
-                                                </Assign>
-                                                <If Condition="[rowDate.Date &gt; weekStart and rowDate.Date &lt; weekEnd]" sap2010:WorkflowViewState.IdRef="If_6">
-                                                  <If.Then>
-                                                    <Assign sap2010:WorkflowViewState.IdRef="Assign_31">
-                                                      <Assign.To>
-                                                        <OutArgument x:TypeArguments="x:Int32">[matchCountWeekly]</OutArgument>
-                                                      </Assign.To>
-                                                      <Assign.Value>
-                                                        <InArgument x:TypeArguments="x:Int32">[matchCountWeekly +1]</InArgument>
-                                                      </Assign.Value>
-                                                    </Assign>
-                                                  </If.Then>
-                                                </If>
-                                              </Sequence>
-                                            </If.Then>
-                                          </If>
-                                        </Sequence>
-                                      </ActivityAction>
-                                    </ui:ForEachRow.Body>
-                                  </ui:ForEachRow>
-                                  <Assign sap2010:WorkflowViewState.IdRef="Assign_27">
-                                    <Assign.To>
-                                      <OutArgument x:TypeArguments="x:Object">[usersDT.Rows(nameIndex)("OpenTicketsAllTime")]</OutArgument>
-                                    </Assign.To>
-                                    <Assign.Value>
-                                      <InArgument x:TypeArguments="x:Object">[matchCount]</InArgument>
-                                    </Assign.Value>
-                                  </Assign>
-                                  <Assign sap2010:WorkflowViewState.IdRef="Assign_32">
-                                    <Assign.To>
-                                      <OutArgument x:TypeArguments="x:Object">[usersDT.Rows(nameIndex)("OpenTicketsWeekly")]</OutArgument>
-                                    </Assign.To>
-                                    <Assign.Value>
-                                      <InArgument x:TypeArguments="x:Object">[matchCountWeekly]</InArgument>
-                                    </Assign.Value>
-                                  </Assign>
-                                  <ui:LogMessage DisplayName="Log message" sap2010:WorkflowViewState.IdRef="LogMessage_17" Level="Info" Message="[&quot;usersDT.Rows(nameIndex)('OpenTicketsAllTime'): &quot; + usersDT.Rows(nameIndex)(&quot;OpenTicketsAllTime&quot;).ToString + &quot; &quot; + usersDT.Rows(nameIndex)(&quot;OpenTicketsWeekly&quot;).ToString]" />
-                                </Sequence>
-                                <Assign sap2010:WorkflowViewState.IdRef="Assign_28">
-                                  <Assign.To>
-                                    <OutArgument x:TypeArguments="x:Int32">[nameIndex]</OutArgument>
-                                  </Assign.To>
-                                  <Assign.Value>
-                                    <InArgument x:TypeArguments="x:Int32">[nameIndex + 1]</InArgument>
-                                  </Assign.Value>
-                                </Assign>
-                              </Sequence>
+                            <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_35">
+                              <ui:Click DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click 'A  #/queue'" sap2010:WorkflowViewState.IdRef="Click_7" KeyModifiers="None" MouseButton="BTN_LEFT" SendWindowMessages="False" SimulateClick="True">
+                                <ui:Click.CursorPosition>
+                                  <ui:CursorPosition OffsetX="36" OffsetY="19" Position="TopLeft" />
+                                </ui:Click.CursorPosition>
+                                <ui:Click.Target>
+                                  <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="a1bfbcaa264319321d9ca12ab0ff5435" Selector="&lt;webctrl aaname='Queue' tag='A' /&gt;" WaitForReady="COMPLETE" />
+                                </ui:Click.Target>
+                              </ui:Click>
+                              <ui:ExtractData NextLinkSelector="{x:Null}" ContinueOnError="True" DataTable="[ticketsDT]" DelayBetweenPagesMS="300" DisplayName="Extract Structured Data 'TABLE'" ExtractMetadata="&lt;extract-table get_columns_name='1' get_empty_columns='1' /&gt;" sap2010:WorkflowViewState.IdRef="ExtractData_7" MaxNumberOfResults="100">
+                                <ui:ExtractData.Target>
+                                  <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="916d8c61a200ceb8d8b18bb035f5904f" Selector="&lt;webctrl tag='TABLE' /&gt;" WaitForReady="COMPLETE" />
+                                </ui:ExtractData.Target>
+                              </ui:ExtractData>
+                              <ui:AddDataColumn x:TypeArguments="x:Int32" Column="{x:Null}" DefaultValue="{x:Null}" AllowDBNull="True" AutoIncrement="False" ColumnName="OpenTicketsAllTime" DataTable="[usersDT]" DisplayName="Add data column" sap2010:WorkflowViewState.IdRef="AddDataColumn`1_2" MaxLength="100" Unique="False" />
+                              <ui:AddDataColumn x:TypeArguments="x:Int32" Column="{x:Null}" DefaultValue="{x:Null}" AllowDBNull="True" AutoIncrement="False" ColumnName="OpenTicketsWeekly" DataTable="[usersDT]" DisplayName="Add data column" sap2010:WorkflowViewState.IdRef="AddDataColumn`1_3" MaxLength="100" Unique="False" />
                             </Sequence>
                           </ActivityAction>
-                        </ui:ForEachRow.Body>
-                      </ui:ForEachRow>
+                        </ui:BrowserScope.Body>
+                      </ui:BrowserScope>
                     </Sequence>
+                    <FlowStep.Next>
+                      <FlowStep x:Name="__ReferenceID1" sap2010:WorkflowViewState.IdRef="FlowStep_3">
+                        <Sequence DisplayName="Count no. tickets per user" sap2010:WorkflowViewState.IdRef="Sequence_7">
+                          <Sequence.Variables>
+                            <Variable x:TypeArguments="x:Int32" Default="0" Name="matchCount" />
+                            <Variable x:TypeArguments="x:Int32" Default="0" Name="nameIndex" />
+                          </Sequence.Variables>
+                          <ui:ForEachRow DataTable="[usersDT]" DisplayName="For each row" sap2010:WorkflowViewState.IdRef="ForEachRow_3">
+                            <ui:ForEachRow.Body>
+                              <ActivityAction x:TypeArguments="sd:DataRow">
+                                <ActivityAction.Argument>
+                                  <DelegateInArgument x:TypeArguments="sd:DataRow" Name="row" />
+                                </ActivityAction.Argument>
+                                <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_73">
+                                  <Sequence.Variables>
+                                    <Variable x:TypeArguments="x:String" Name="currentName" />
+                                  </Sequence.Variables>
+                                  <Assign sap2010:WorkflowViewState.IdRef="Assign_24">
+                                    <Assign.To>
+                                      <OutArgument x:TypeArguments="x:String">[currentName]</OutArgument>
+                                    </Assign.To>
+                                    <Assign.Value>
+                                      <InArgument x:TypeArguments="x:String">[row("Names").ToString]</InArgument>
+                                    </Assign.Value>
+                                  </Assign>
+                                  <Sequence sap2010:WorkflowViewState.IdRef="Sequence_77">
+                                    <Sequence.Variables>
+                                      <Variable x:TypeArguments="x:String" Name="outdt" />
+                                    </Sequence.Variables>
+                                    <ui:Comment sap2010:WorkflowViewState.IdRef="Comment_3" Text="For each user name we will count the number of tickets" />
+                                    <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_76">
+                                      <Sequence.Variables>
+                                        <Variable x:TypeArguments="x:Int32" Name="matchCountWeekly" />
+                                        <Variable x:TypeArguments="x:String" Name="outdt" />
+                                      </Sequence.Variables>
+                                      <Assign sap2010:WorkflowViewState.IdRef="Assign_25">
+                                        <Assign.To>
+                                          <OutArgument x:TypeArguments="x:Int32">[matchCount]</OutArgument>
+                                        </Assign.To>
+                                        <Assign.Value>
+                                          <InArgument x:TypeArguments="x:Int32">0</InArgument>
+                                        </Assign.Value>
+                                      </Assign>
+                                      <Assign sap2010:WorkflowViewState.IdRef="Assign_29">
+                                        <Assign.To>
+                                          <OutArgument x:TypeArguments="x:Int32">[matchCountWeekly]</OutArgument>
+                                        </Assign.To>
+                                        <Assign.Value>
+                                          <InArgument x:TypeArguments="x:Int32">0</InArgument>
+                                        </Assign.Value>
+                                      </Assign>
+                                      <ui:ForEachRow DataTable="[ticketsDT]" DisplayName="For each row" sap2010:WorkflowViewState.IdRef="ForEachRow_4">
+                                        <ui:ForEachRow.Body>
+                                          <ActivityAction x:TypeArguments="sd:DataRow">
+                                            <ActivityAction.Argument>
+                                              <DelegateInArgument x:TypeArguments="sd:DataRow" Name="row" />
+                                            </ActivityAction.Argument>
+                                            <Sequence DisplayName="Body" sap2010:WorkflowViewState.IdRef="Sequence_75">
+                                              <If Condition="[String.Compare(currentName, row(&quot;Owner&quot;).ToString) = 0]" sap2010:WorkflowViewState.IdRef="If_4">
+                                                <If.Then>
+                                                  <Sequence sap2010:WorkflowViewState.IdRef="Sequence_74">
+                                                    <Sequence.Variables>
+                                                      <Variable x:TypeArguments="s:DateTime" Default="[DateTime.ParseExact(&quot;21.08.2017&quot;, &quot;dd.MM.yyyy&quot;, CultureInfo.InvariantCulture)]" Name="weekStart" />
+                                                      <Variable x:TypeArguments="s:DateTime" Default="[DateTime.ParseExact(&quot;27.08.2017&quot;, &quot;dd.MM.yyyy&quot;, CultureInfo.InvariantCulture)]" Name="weekEnd" />
+                                                      <Variable x:TypeArguments="s:DateTime" Name="rowDate" />
+                                                    </Sequence.Variables>
+                                                    <Assign sap2010:WorkflowViewState.IdRef="Assign_26">
+                                                      <Assign.To>
+                                                        <OutArgument x:TypeArguments="x:Int32">[matchCount]</OutArgument>
+                                                      </Assign.To>
+                                                      <Assign.Value>
+                                                        <InArgument x:TypeArguments="x:Int32">[matchCount+1]</InArgument>
+                                                      </Assign.Value>
+                                                    </Assign>
+                                                    <Assign sap2010:WorkflowViewState.IdRef="Assign_30">
+                                                      <Assign.To>
+                                                        <OutArgument x:TypeArguments="s:DateTime">[rowDate]</OutArgument>
+                                                      </Assign.To>
+                                                      <Assign.Value>
+                                                        <InArgument x:TypeArguments="s:DateTime">[DateTime.ParseExact(row("Created").ToString, "dd.MM.yyyy", CultureInfo.InvariantCulture)]</InArgument>
+                                                      </Assign.Value>
+                                                    </Assign>
+                                                    <If Condition="[rowDate.Date &gt; weekStart and rowDate.Date &lt; weekEnd]" sap2010:WorkflowViewState.IdRef="If_6">
+                                                      <If.Then>
+                                                        <Assign sap2010:WorkflowViewState.IdRef="Assign_31">
+                                                          <Assign.To>
+                                                            <OutArgument x:TypeArguments="x:Int32">[matchCountWeekly]</OutArgument>
+                                                          </Assign.To>
+                                                          <Assign.Value>
+                                                            <InArgument x:TypeArguments="x:Int32">[matchCountWeekly +1]</InArgument>
+                                                          </Assign.Value>
+                                                        </Assign>
+                                                      </If.Then>
+                                                    </If>
+                                                  </Sequence>
+                                                </If.Then>
+                                              </If>
+                                            </Sequence>
+                                          </ActivityAction>
+                                        </ui:ForEachRow.Body>
+                                      </ui:ForEachRow>
+                                      <Assign sap2010:WorkflowViewState.IdRef="Assign_27">
+                                        <Assign.To>
+                                          <OutArgument x:TypeArguments="x:Object">[usersDT.Rows(nameIndex)("OpenTicketsAllTime")]</OutArgument>
+                                        </Assign.To>
+                                        <Assign.Value>
+                                          <InArgument x:TypeArguments="x:Object">[matchCount]</InArgument>
+                                        </Assign.Value>
+                                      </Assign>
+                                      <Assign sap2010:WorkflowViewState.IdRef="Assign_32">
+                                        <Assign.To>
+                                          <OutArgument x:TypeArguments="x:Object">[usersDT.Rows(nameIndex)("OpenTicketsWeekly")]</OutArgument>
+                                        </Assign.To>
+                                        <Assign.Value>
+                                          <InArgument x:TypeArguments="x:Object">[matchCountWeekly]</InArgument>
+                                        </Assign.Value>
+                                      </Assign>
+                                      <ui:LogMessage DisplayName="Log message" sap2010:WorkflowViewState.IdRef="LogMessage_17" Level="Info" Message="[&quot;usersDT.Rows(nameIndex)('OpenTicketsAllTime'): &quot; + usersDT.Rows(nameIndex)(&quot;OpenTicketsAllTime&quot;).ToString + &quot; &quot; + usersDT.Rows(nameIndex)(&quot;OpenTicketsWeekly&quot;).ToString]" />
+                                      <Assign sap2010:WorkflowViewState.IdRef="Assign_33">
+                                        <Assign.To>
+                                          <OutArgument x:TypeArguments="x:Int32">[nameIndex]</OutArgument>
+                                        </Assign.To>
+                                        <Assign.Value>
+                                          <InArgument x:TypeArguments="x:Int32">[nameIndex+1]</InArgument>
+                                        </Assign.Value>
+                                      </Assign>
+                                      <ui:OutputDataTable DataTable="[usersDT]" DisplayName="Output data table" sap2010:WorkflowViewState.IdRef="OutputDataTable_1" Text="[outdt]" />
+                                      <ui:LogMessage DisplayName="Log message" sap2010:WorkflowViewState.IdRef="LogMessage_19" Level="Info" Message="[nameIndex.ToString + &quot; &quot; +outdt]" />
+                                    </Sequence>
+                                  </Sequence>
+                                </Sequence>
+                              </ActivityAction>
+                            </ui:ForEachRow.Body>
+                          </ui:ForEachRow>
+                        </Sequence>
+                        <FlowStep.Next>
+                          <FlowDecision x:Name="__ReferenceID7" Condition="[currentDepartment &lt; 5]" DisplayName="More departments?" sap2010:WorkflowViewState.IdRef="FlowDecision_2">
+                            <FlowDecision.True>
+                              <FlowStep x:Name="__ReferenceID8" sap2010:WorkflowViewState.IdRef="FlowStep_24">
+                                <Assign DisplayName="Increment currentDepartment" sap2010:WorkflowViewState.IdRef="Assign_36">
+                                  <Assign.To>
+                                    <OutArgument x:TypeArguments="x:Int32">[currentDepartment]</OutArgument>
+                                  </Assign.To>
+                                  <Assign.Value>
+                                    <InArgument x:TypeArguments="x:Int32">[currentDepartment+1]</InArgument>
+                                  </Assign.Value>
+                                </Assign>
+                                <FlowStep.Next>
+                                  <x:Reference>__ReferenceID0</x:Reference>
+                                </FlowStep.Next>
+                              </FlowStep>
+                            </FlowDecision.True>
+                            <FlowDecision.False>
+                              <FlowStep x:Name="__ReferenceID5" sap2010:WorkflowViewState.IdRef="FlowStep_15">
+                                <ui:ExcelApplicationScope Password="{x:Null}" DisplayName="Write ticket report to file" sap2010:WorkflowViewState.IdRef="ExcelApplicationScope_1" Visible="False" WorkbookPath="xls\report.xlsx">
+                                  <ui:ExcelApplicationScope.Body>
+                                    <ActivityAction x:TypeArguments="ui:WorkbookApplication">
+                                      <ActivityAction.Argument>
+                                        <DelegateInArgument x:TypeArguments="ui:WorkbookApplication" Name="ExcelWorkbookScope" />
+                                      </ActivityAction.Argument>
+                                      <Sequence sap2010:WorkflowViewState.IdRef="Sequence_79">
+                                        <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_78">
+                                          <ui:ExcelWriteRange AddHeaders="True" DataTable="[usersDT]" DisplayName="Write Range" sap2010:WorkflowViewState.IdRef="ExcelWriteRange_1" SheetName="Sheet1" StartingCell="A1" />
+                                        </Sequence>
+                                      </Sequence>
+                                    </ActivityAction>
+                                  </ui:ExcelApplicationScope.Body>
+                                </ui:ExcelApplicationScope>
+                                <FlowStep.Next>
+                                  <FlowStep x:Name="__ReferenceID6" sap2010:WorkflowViewState.IdRef="FlowStep_17">
+                                    <ui:SendOutlookMail Account="{x:Null}" Bcc="{x:Null}" Cc="{x:Null}" MailMessage="{x:Null}" TimeoutMS="{x:Null}" Body="Scheduled report. See attached file." DisplayName="Send weekly report" sap2010:WorkflowViewState.IdRef="SendOutlookMail_1" IsBodyHtml="False" IsDraft="False" Subject="[reportTitle + Date.Now.Date.ToString]" To="[recipient]">
+                                      <ui:SendOutlookMail.Files>
+                                        <scg:List x:TypeArguments="InArgument(x:String)" Capacity="4">
+                                          <InArgument x:TypeArguments="x:String">xls\report.xlsx</InArgument>
+                                        </scg:List>
+                                      </ui:SendOutlookMail.Files>
+                                    </ui:SendOutlookMail>
+                                  </FlowStep>
+                                </FlowStep.Next>
+                              </FlowStep>
+                            </FlowDecision.False>
+                          </FlowDecision>
+                        </FlowStep.Next>
+                      </FlowStep>
+                    </FlowStep.Next>
                   </FlowStep>
                 </FlowStep.Next>
               </FlowStep>
@@ -352,98 +435,16 @@
         </FlowStep.Next>
       </FlowStep>
     </Flowchart.StartNode>
-    <FlowStep sap2010:WorkflowViewState.IdRef="FlowStep_2">
-      <Sequence DisplayName="Recording Sequence" sap2010:WorkflowViewState.IdRef="Sequence_4">
-        <ui:BrowserScope Browser="{x:Null}" SearchScope="{x:Null}" TimeoutMS="{x:Null}" UiBrowser="{x:Null}" BrowserType="Chrome" DisplayName="Attach Browser 'TicketPRO Page'" sap2010:WorkflowViewState.IdRef="BrowserScope_2" InformativeScreenshot="bee3a907aa444054fd16206029838c8d" Selector="&lt;html app='chrome.exe' title='TicketPRO 2000' /&gt;">
-          <ui:BrowserScope.Body>
-            <ActivityAction x:TypeArguments="x:Object">
-              <ActivityAction.Argument>
-                <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
-              </ActivityAction.Argument>
-              <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_3" />
-            </ActivityAction>
-          </ui:BrowserScope.Body>
-        </ui:BrowserScope>
-      </Sequence>
-    </FlowStep>
-    <x:Reference>__ReferenceID0</x:Reference>
-    <FlowStep sap2010:WorkflowViewState.IdRef="FlowStep_4">
-      <Sequence DisplayName="Recording Sequence" sap2010:WorkflowViewState.IdRef="Sequence_16" />
-    </FlowStep>
     <x:Reference>__ReferenceID1</x:Reference>
     <x:Reference>__ReferenceID2</x:Reference>
     <x:Reference>__ReferenceID3</x:Reference>
+    <x:Reference>__ReferenceID0</x:Reference>
     <FlowStep sap2010:WorkflowViewState.IdRef="FlowStep_10">
       <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke OpenTicketPROandLogin workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_1" UnSafe="False" WorkflowFileName="OpenTicketPROandLogin.xaml">
         <ui:InvokeWorkflowFile.Arguments>
           <scg:Dictionary x:TypeArguments="x:String, Argument" />
         </ui:InvokeWorkflowFile.Arguments>
       </ui:InvokeWorkflowFile>
-    </FlowStep>
-    <FlowStep sap2010:WorkflowViewState.IdRef="FlowStep_11">
-      <Sequence DisplayName="Recording Sequence" sap2010:WorkflowViewState.IdRef="Sequence_56">
-        <ui:BrowserScope Browser="{x:Null}" SearchScope="{x:Null}" TimeoutMS="{x:Null}" UiBrowser="{x:Null}" BrowserType="Chrome" DisplayName="Attach Browser 'TicketPRO Page'" sap2010:WorkflowViewState.IdRef="BrowserScope_16" InformativeScreenshot="fc5d4348bb6bb1166a21320238b44c11" Selector="&lt;html app='chrome.exe' title='TicketPRO 2000' /&gt;">
-          <ui:BrowserScope.Body>
-            <ActivityAction x:TypeArguments="x:Object">
-              <ActivityAction.Argument>
-                <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
-              </ActivityAction.Argument>
-              <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_57">
-                <Sequence.Variables>
-                  <Variable x:TypeArguments="x:String" Default="john@example.com" Name="username" />
-                  <Variable x:TypeArguments="x:String" Default="password" Name="password" />
-                </Sequence.Variables>
-                <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Type into 'INPUT'" EmptyField="True" sap2010:WorkflowViewState.IdRef="TypeInto_1" SendWindowMessages="False" SimulateType="True" Text="[username]">
-                  <ui:TypeInto.Target>
-                    <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="b5c4621f1ad276057707fe0cb3ba0ef0" Selector="&lt;webctrl tag='INPUT' type='email' /&gt;" WaitForReady="COMPLETE" />
-                  </ui:TypeInto.Target>
-                </ui:TypeInto>
-                <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Type into 'INPUT'" EmptyField="True" sap2010:WorkflowViewState.IdRef="TypeInto_3" SendWindowMessages="False" SimulateType="True" Text="[password]">
-                  <ui:TypeInto.Target>
-                    <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="d19a9d1ab9fdf4aad4c21fa11d5f0736" Selector="&lt;webctrl tag='INPUT' type='password' /&gt;" WaitForReady="COMPLETE" />
-                  </ui:TypeInto.Target>
-                </ui:TypeInto>
-                <ui:Click DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click 'BUTTON'" sap2010:WorkflowViewState.IdRef="Click_10" KeyModifiers="None" MouseButton="BTN_LEFT" SendWindowMessages="False" SimulateClick="True">
-                  <ui:Click.CursorPosition>
-                    <ui:CursorPosition OffsetX="114" OffsetY="12" Position="TopLeft" />
-                  </ui:Click.CursorPosition>
-                  <ui:Click.Target>
-                    <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="c43b23ccecb2c712bfbb2a11fd24d54a" Selector="&lt;webctrl tag='BUTTON' /&gt;" WaitForReady="COMPLETE" />
-                  </ui:Click.Target>
-                </ui:Click>
-              </Sequence>
-            </ActivityAction>
-          </ui:BrowserScope.Body>
-        </ui:BrowserScope>
-      </Sequence>
-    </FlowStep>
-    <FlowStep sap2010:WorkflowViewState.IdRef="FlowStep_12">
-      <Sequence DisplayName="Recording Sequence" sap2010:WorkflowViewState.IdRef="Sequence_59">
-        <ui:BrowserScope Browser="{x:Null}" SearchScope="{x:Null}" TimeoutMS="{x:Null}" UiBrowser="{x:Null}" BrowserType="Chrome" DisplayName="Attach Browser 'TicketPRO Page'" sap2010:WorkflowViewState.IdRef="BrowserScope_17" InformativeScreenshot="c8bc321092dc2e7bcac4c69995f79d75" Selector="&lt;html app='chrome.exe' title='TicketPRO 2000' /&gt;">
-          <ui:BrowserScope.Body>
-            <ActivityAction x:TypeArguments="x:Object">
-              <ActivityAction.Argument>
-                <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
-              </ActivityAction.Argument>
-              <Sequence DisplayName="Do" sap2010:WorkflowViewState.IdRef="Sequence_58">
-                <ui:TypeInto DelayBefore="{x:Null}" DelayBetweenKeys="{x:Null}" DelayMS="{x:Null}" Activate="True" ClickBeforeTyping="False" DisplayName="Type into 'INPUT'" EmptyField="True" sap2010:WorkflowViewState.IdRef="TypeInto_2" SendWindowMessages="False" SimulateType="True" Text="password">
-                  <ui:TypeInto.Target>
-                    <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="d19a9d1ab9fdf4aad4c21fa11d5f0736" Selector="&lt;webctrl tag='INPUT' type='password' /&gt;" WaitForReady="COMPLETE" />
-                  </ui:TypeInto.Target>
-                </ui:TypeInto>
-                <ui:Click DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click 'BUTTON'" sap2010:WorkflowViewState.IdRef="Click_9" KeyModifiers="None" MouseButton="BTN_LEFT" SendWindowMessages="False" SimulateClick="True">
-                  <ui:Click.CursorPosition>
-                    <ui:CursorPosition OffsetX="114" OffsetY="12" Position="TopLeft" />
-                  </ui:Click.CursorPosition>
-                  <ui:Click.Target>
-                    <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="c43b23ccecb2c712bfbb2a11fd24d54a" Selector="&lt;webctrl tag='BUTTON' /&gt;" WaitForReady="COMPLETE" />
-                  </ui:Click.Target>
-                </ui:Click>
-              </Sequence>
-            </ActivityAction>
-          </ui:BrowserScope.Body>
-        </ui:BrowserScope>
-      </Sequence>
     </FlowStep>
     <FlowStep sap2010:WorkflowViewState.IdRef="FlowStep_13">
       <ui:Comment sap2010:WorkflowViewState.IdRef="Comment_1" Text="All users are the same for all departments, only collect them once." />
@@ -459,7 +460,59 @@
       </FlowDecision.False>
     </FlowDecision>
     <x:Reference>__ReferenceID4</x:Reference>
-    <sads:DebugSymbol.Symbol>dzlDOlxVc2Vyc1xhbmhvdmVcRG9jdW1lbnRzXEdpdEh1YlxSUEFcSmFuT3ZlRGVtb1xNYWluLnhhbWx2QgPPAw8CAQFEOERVAgEERThFVQIBA0c1RzsCAQJLCZwBFAIBaJ8BDbkBGAIBX7wBEdcBHAIBR9oBFdoCIAIBBUwLmwEdAgFpoAEPtwEhAgFiuAEPuAGUAQIBYL0BE9YBJQIBSNwBRdwBSAIBBt4BF9kCJwIBB0ymAkzeAgMBkwFSEZgBHAIBaqABqwKgAeMCAgFnpgEVtAEgAgFjuAF8uAGRAQIBYb0BrwK9AecCAgFewwEZ0wEkAgFJ3gEw3gE7AgFF5AEd1gIoAgEIVxNlHgMBkQFmE2okAwGJAWsTchgDAYMBcxN6HAIBf3sTggEcAgF7gwETlwEjAgFrpwEXswEnAgFkxAEbywEmAgFazAEb0AEsAgFS0QEb0QHDAgIBTtIBG9IBwgICAUroAR/vASgCAUHwAR/VAioCAQljpgFj0AEDAZIBZqUDZqoDAwGQAWimAWjYAQMBjwFmgAFmhQEDAY4BZk9mVQMBjQFmYGZrAwGLAWbEAWbhAgMBigFrIWs3AwGEAW0XbakBAwGHAXAXcK0BAwGFAXg9eFEDAYIBdT51SQMBgAGAAUiAAV0CAX59SX1QAgF8gwEsgwE3AgF5iQEZlAEkAgFspwHZAacB8wECAWWxAaoBsQHKAQIBZskBrgHJAdgBAgFdxgFHxgFLAgFcxgE6xgE+AgFbzAHWAswB2wICAVnOAa4BzgHNAQIBWMwBigHMAY8BAgFXzAFXzAFdAgFWzAFozAF1AgFUzAHOAcwBkgICAVPRAaUB0QG5AQIBUdEBxAHRAc8BAgFP0gGlAdIBuAECAU3SAcMB0gHOAQIBS+0BSu0BYQIBROoBS+oBWAIBQvIBT/IBUgIBCvQBIfQBmQECAUD1ASHMAiwCARDNAiHUAioCAQtthQFtpgEDAYgBcIQBcKoBAwGGAYoBG5EBJAIBdZIBG5IBvQECAXCTARuTAacBAgFt+QEjgAIsAgE8gQIjiAIsAgE4iQIjugIzAgEbuwIjwgIsAgEXwwIjygIsAgETywIjywLoAgIBEdICS9ICWgIBDs8CTM8CVwIBDI8BRo8BYQIBeIwBR4wBTQIBdpIBUpIBWwIBc5IBsgGSAboBAgFxkwGJAZMBpAECAW7+AU3+AU4CAT/7AU77AVoCAT2GAk2GAk4CATuDAk6DAmACATmJAjyJAkkCATaPAim3AjQCARzAAk7AAloCARm9Ak+9An4CARjIAk7IAmACARXFAk/FAn0CARTLApEBywLlAgIBEpACK7YCMAIBHZACOZACfQIBHpICL7QCOgIBH5QCYpQCxwECASGVAmKVAscBAgEgmAIxnwI6AgExoAIxpwI6AgEtqAIxswI2AgEinQJbnQJpAgE0mgJcmgJoAgEypQJepQK4AQIBMKICX6ICaAIBLqgCP6gCfAIBI6oCNbECPgIBKK8CX68CdAIBK6wCYKwCcgIBKQ==</sads:DebugSymbol.Symbol>
+    <x:Reference>__ReferenceID5</x:Reference>
+    <x:Reference>__ReferenceID6</x:Reference>
+    <FlowStep sap2010:WorkflowViewState.IdRef="FlowStep_18">
+      <Assign sap2010:WorkflowViewState.IdRef="Assign_34">
+        <Assign.To>
+          <OutArgument x:TypeArguments="x:Object">[currentDepartment]</OutArgument>
+        </Assign.To>
+      </Assign>
+    </FlowStep>
+    <FlowStep sap2010:WorkflowViewState.IdRef="FlowStep_20">
+      <ui:Click DelayBefore="{x:Null}" DelayMS="{x:Null}" ClickType="CLICK_SINGLE" DisplayName="Click 'SELECT  active-departme...'" sap2010:WorkflowViewState.IdRef="Click_9" KeyModifiers="None" MouseButton="BTN_LEFT" SendWindowMessages="False" SimulateClick="False">
+        <ui:Click.CursorPosition>
+          <ui:CursorPosition Position="Center">
+            <ui:CursorPosition.OffsetX>
+              <InArgument x:TypeArguments="x:Int32" />
+            </ui:CursorPosition.OffsetX>
+            <ui:CursorPosition.OffsetY>
+              <InArgument x:TypeArguments="x:Int32" />
+            </ui:CursorPosition.OffsetY>
+          </ui:CursorPosition>
+        </ui:Click.CursorPosition>
+        <ui:Click.Target>
+          <ui:Target ClippingRegion="{x:Null}" Element="{x:Null}" TimeoutMS="{x:Null}" InformativeScreenshot="e7fcbdfba9c8621b66e6e9140f0782f8" Selector="&lt;html app='chrome.exe' title='TicketPRO 2000' /&gt;&lt;webctrl tag='SELECT' /&gt;" WaitForReady="INTERACTIVE" />
+        </ui:Click.Target>
+      </ui:Click>
+    </FlowStep>
+    <FlowStep sap2010:WorkflowViewState.IdRef="FlowStep_21">
+      <ui:BrowserScope Browser="{x:Null}" SearchScope="{x:Null}" TimeoutMS="{x:Null}" UiBrowser="{x:Null}" BrowserType="Chrome" DisplayName="Attach Browser 'chrome.exe TicketPRO'" sap2010:WorkflowViewState.IdRef="BrowserScope_16" InformativeScreenshot="74482d497c60fed3ecd40122fd69339f" Selector="&lt;html app='chrome.exe' title='TicketPRO 2000' /&gt;">
+        <ui:BrowserScope.Body>
+          <ActivityAction x:TypeArguments="x:Object">
+            <ActivityAction.Argument>
+              <DelegateInArgument x:TypeArguments="x:Object" Name="ContextTarget" />
+            </ActivityAction.Argument>
+            <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="Invoke getDepartments workflow" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_2" UnSafe="False" WorkflowFileName="getDepartments.xaml">
+              <ui:InvokeWorkflowFile.Arguments>
+                <scg:Dictionary x:TypeArguments="x:String, Argument" />
+              </ui:InvokeWorkflowFile.Arguments>
+            </ui:InvokeWorkflowFile>
+          </ActivityAction>
+        </ui:BrowserScope.Body>
+      </ui:BrowserScope>
+    </FlowStep>
+    <FlowStep sap2010:WorkflowViewState.IdRef="FlowStep_23">
+      <ui:InvokeWorkflowFile ContinueOnError="{x:Null}" DisplayName="getDepartments" sap2010:WorkflowViewState.IdRef="InvokeWorkflowFile_3" UnSafe="False" WorkflowFileName="getDepartments.xaml">
+        <ui:InvokeWorkflowFile.Arguments>
+          <scg:Dictionary x:TypeArguments="x:String, Argument" />
+        </ui:InvokeWorkflowFile.Arguments>
+      </ui:InvokeWorkflowFile>
+    </FlowStep>
+    <x:Reference>__ReferenceID7</x:Reference>
+    <x:Reference>__ReferenceID8</x:Reference>
+    <x:Reference>__ReferenceID9</x:Reference>
+    <sads:DebugSymbol.Symbol>dzlDOlxVc2Vyc1xhbmhvdmVcRG9jdW1lbnRzXEdpdEh1YlxSUEFcSmFuT3ZlRGVtb1xNYWluLnhhbWyVAUIDhAQPAgEBRDhEVQIBB0U4RVUCAQZHNUc7AgEFSDRIUAIBBEk0SVsCAQNOM042AgECUgmiARQDAZgBpQENuQEYAwGNAbwBEdYBHAMBggHZARX0ASACAWr3ARn7AiQCAR/9Akv9AmcCAR2PAyGcAzwCARSfAyWlAzoCAQ2AAyGHAyoCAQhTC6EBHQMBmQGpAQ+wASMDAZMBsQEPuAEYAwGOAb0BE9QBJQMBhQHVARPVAZgBAwGDAdoBF/MBKQIBa/kBSfkBTAIBIfoBSfoBTAIBIPwBG/oCKwIBIo8D0AGPA+EBAgEclQMnmQMyAgEVnwPtAp8D+gICARKiA1KiA2ECARGfA5oBnwPAAQIBEJ8DwQKfA+kCAgEOhQNLhQNgAgELggNMggNfAgEJU6YCU94CAwHAAVkRngEcAwGaAasBO6sBSwMBlgGuAaIBrgH4AQMBlQGpAbYBqQHMAQMBlAG2ATy2AWUDAZEBswE9swFPAwGPAb0BrwK9AecCAwGMAcMBGdEBJAMBhgHVAYAB1QGVAQMBhAHaAbMC2gHrAgMBgQHgAR3wASgCAWz8ATT8AT8CAWiCAiH3AiwCASOWAymYAzQCARZeE2weAwG+AW0TcSQDAbYBchN5GAMBsAF6E4EBHAMBrAGCAROJARwDAagBigETnQEjAwGbAcQBG9ABKwMBhwHhAR/oASoCAX3pAR/tATACAXXuAR/uAccCAgFx7wEf7wHGAgIBbYYCI40CLAIBZI4CI/YCLgIBJJcDK5cD3AECARdqpgFq0AEDAb8BbaUDbaoDAwG9AW+mAW/YAQMBvAFtgAFthQEDAbsBbU9tVQMBugFtYG1rAwG4AW3EAW3hAgMBtwFyIXI3AwGxAXQXdKkBAwG0AXcXd60BAwGyAX89f1EDAa8BfD58SQMBrQGHAUiHAV0DAasBhAFJhAFQAwGpAYoBLIoBNwMBpgGQARmaASQDAZwBxAHdAcQBggIDAYgBzgGuAc4BzgEDAYsB5gGyAeYB3AEDAYAB4wFL4wFPAgF/4wE+4wFCAgF+6QHaAukB3wICAXzrAbIB6wHRAQIBe+kBjgHpAZMBAgF66QFb6QFhAgF56QFs6QF5AgF36QHSAekBlgICAXbuAakB7gG9AQIBdO4ByAHuAdMBAgFy7wGpAe8BvAECAXDvAccB7wHSAQIBbosCTosCZQIBZ4gCT4gCXAIBZZICJZICnQECAWOTAiX1AjACASWXA9UBlwPZAQIBG5cDW5cDZgIBGZcDvwGXA8cBAgEYdIUBdKYBAwG1AXeEAXeqAQMBswGRARuYASQDAaIBmQEbmQG9AQMBnQGYAiefAjACAV+gAienAjACAVuoAifZAjcCAT7aAifhAjACATriAifpAjACATbqAifqAuwCAgE06wIn8gIwAgEv8wIn8wK2AQIBKvQCJ/QCxQECASaWAUaWAWEDAaUBkwFHkwFNAwGjAZkBUpkBWwMBoAGZAbIBmQG6AQMBngGdAlGdAlICAWKaAlKaAl4CAWClAlGlAlICAV6iAlKiAmQCAVyoAkCoAk0CAVmuAi3WAjgCAT/fAlLfAl4CATzcAlPcAoIBAgE75wJS5wJkAgE45AJT5AKBAQIBN+oClQHqAukCAgE18AJR8AJeAgEy7QJS7QJdAgEw8wKqAfMCswECAS3zAkXzAlACASv0ApUB9ALCAQIBJ68CL9UCNAIBQK8CPa8CgQECAUGxAjPTAj4CAUKzAmazAssBAgFEtAJmtALLAQIBQ7cCNb4CPgIBVL8CNcYCPgIBUMcCNdICOgIBRbwCX7wCbQIBV7kCYLkCbAIBVcQCYsQCvAECAVPBAmPBAmwCAVHHAkPHAoABAgFGyQI50AJCAgFLzgJjzgJ4AgFOywJkywJ2AgFM</sads:DebugSymbol.Symbol>
   </Flowchart>
   <sap2010:WorkflowViewState.ViewStateManager>
     <sap2010:ViewStateManager>
@@ -470,26 +523,40 @@
       <sap2010:ViewStateData Id="If_2" sap:VirtualizedContainerService.HintSize="653,238" />
       <sap2010:ViewStateData Id="Assign_5" sap:VirtualizedContainerService.HintSize="653,60" />
       <sap2010:ViewStateData Id="Assign_8" sap:VirtualizedContainerService.HintSize="653,60" />
-      <sap2010:ViewStateData Id="Assign_17" sap:VirtualizedContainerService.HintSize="314,60" />
-      <sap2010:ViewStateData Id="AddToCollection`1_6" sap:VirtualizedContainerService.HintSize="314,22" />
-      <sap2010:ViewStateData Id="LogMessage_11" sap:VirtualizedContainerService.HintSize="314,91" />
-      <sap2010:ViewStateData Id="Sequence_64" sap:VirtualizedContainerService.HintSize="336,377">
+      <sap2010:ViewStateData Id="Assign_17" sap:VirtualizedContainerService.HintSize="242,60" />
+      <sap2010:ViewStateData Id="AddToCollection`1_6" sap:VirtualizedContainerService.HintSize="242,22" />
+      <sap2010:ViewStateData Id="Sequence_64" sap:VirtualizedContainerService.HintSize="264,246">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ForEachRow_1" sap:VirtualizedContainerService.HintSize="653,524" />
-      <sap2010:ViewStateData Id="Sequence_25" sap:VirtualizedContainerService.HintSize="675,1418">
+      <sap2010:ViewStateData Id="ForEachRow_1" sap:VirtualizedContainerService.HintSize="653,393" />
+      <sap2010:ViewStateData Id="Sequence_25" sap:VirtualizedContainerService.HintSize="675,1287">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="BrowserScope_8" sap:VirtualizedContainerService.HintSize="689,1564" />
+      <sap2010:ViewStateData Id="BrowserScope_8" sap:VirtualizedContainerService.HintSize="689,1433" />
       <sap2010:ViewStateData Id="Sequence_21" sap:VirtualizedContainerService.HintSize="200,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="InjectJsScript_4" sap:VirtualizedContainerService.HintSize="314,134">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_37" sap:VirtualizedContainerService.HintSize="314,60" />
+      <sap2010:ViewStateData Id="Sequence_81" sap:VirtualizedContainerService.HintSize="200,51">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -559,33 +626,108 @@
       <sap2010:ViewStateData Id="Assign_27" sap:VirtualizedContainerService.HintSize="663,60" />
       <sap2010:ViewStateData Id="Assign_32" sap:VirtualizedContainerService.HintSize="663,60" />
       <sap2010:ViewStateData Id="LogMessage_17" sap:VirtualizedContainerService.HintSize="663,91" />
-      <sap2010:ViewStateData Id="Sequence_76" sap:VirtualizedContainerService.HintSize="685,1607">
+      <sap2010:ViewStateData Id="Assign_33" sap:VirtualizedContainerService.HintSize="663,60" />
+      <sap2010:ViewStateData Id="OutputDataTable_1" sap:VirtualizedContainerService.HintSize="663,22" />
+      <sap2010:ViewStateData Id="LogMessage_19" sap:VirtualizedContainerService.HintSize="663,91" />
+      <sap2010:ViewStateData Id="Sequence_76" sap:VirtualizedContainerService.HintSize="685,1900">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Assign_28" sap:VirtualizedContainerService.HintSize="685,60" />
-      <sap2010:ViewStateData Id="Sequence_77" sap:VirtualizedContainerService.HintSize="707,1945">
+      <sap2010:ViewStateData Id="Sequence_77" sap:VirtualizedContainerService.HintSize="707,2138">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_73" sap:VirtualizedContainerService.HintSize="729,2169">
+      <sap2010:ViewStateData Id="Sequence_73" sap:VirtualizedContainerService.HintSize="729,2362">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="ForEachRow_3" sap:VirtualizedContainerService.HintSize="759,2317" />
+      <sap2010:ViewStateData Id="ForEachRow_3" sap:VirtualizedContainerService.HintSize="759,2510" />
       <sap2010:ViewStateData Id="Sequence_7" sap:VirtualizedContainerService.HintSize="200,51">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Assign_36" sap:VirtualizedContainerService.HintSize="242,60">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_24">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">138.895,420</av:Point>
+            <av:Size x:Key="ShapeSize">242,60</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">259.895,420 259.895,350 340,350</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ExcelWriteRange_1" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="Sequence_78" sap:VirtualizedContainerService.HintSize="336,211">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Sequence_79" sap:VirtualizedContainerService.HintSize="358,335">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="ExcelApplicationScope_1" sap:VirtualizedContainerService.HintSize="200,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="SendOutlookMail_1" sap:VirtualizedContainerService.HintSize="200,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_17">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">490,794.5</av:Point>
+            <av:Size x:Key="ShapeSize">200,51</av:Size>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_15">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">500,714.5</av:Point>
+            <av:Size x:Key="ShapeSize">200,51</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">600,765.5 590,765.5 590,794.5</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowDecision_2" sap:VirtualizedContainerService.HintSize="111,87">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+            <av:Point x:Key="ShapeLocation">384.5,606.5</av:Point>
+            <av:Size x:Key="ShapeSize">111,87</av:Size>
+            <av:PointCollection x:Key="TrueConnector">384.5,650 259.895,650 259.895,480</av:PointCollection>
+            <av:PointCollection x:Key="FalseConnector">495.5,650 600,650 600,714.5</av:PointCollection>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
@@ -594,6 +736,7 @@
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">340,514.5</av:Point>
             <av:Size x:Key="ShapeSize">200,51</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">440,565.5 440,606.5</av:PointCollection>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
@@ -609,9 +752,18 @@
       <sap2010:ViewStateData Id="FlowStep_7">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">330,254.5</av:Point>
+            <av:Point x:Key="ShapeLocation">340,324.5</av:Point>
             <av:Size x:Key="ShapeSize">200,51</av:Size>
-            <av:PointCollection x:Key="ConnectorLocation">430,305.5 430,335.5 440,335.5 440,424.5</av:PointCollection>
+            <av:PointCollection x:Key="ConnectorLocation">440,375.5 440,424.5</av:PointCollection>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_25">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">10,344.5</av:Point>
+            <av:Size x:Key="ShapeSize">200,51</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">210,370 240,370 240,294.5 440,294.5 440,324.5</av:PointCollection>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
@@ -620,45 +772,7 @@
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">10,244.5</av:Point>
             <av:Size x:Key="ShapeSize">200,51</av:Size>
-            <av:PointCollection x:Key="ConnectorLocation">110,295.5 110,314.5 300,314.5 300,224.5 430,224.5 430,254.5</av:PointCollection>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_3" sap:VirtualizedContainerService.HintSize="200,99">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="BrowserScope_2" sap:VirtualizedContainerService.HintSize="414,245" />
-      <sap2010:ViewStateData Id="Sequence_4" sap:VirtualizedContainerService.HintSize="200,51">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FlowStep_2">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">750,284.5</av:Point>
-            <av:Size x:Key="ShapeSize">200,51</av:Size>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Sequence_16" sap:VirtualizedContainerService.HintSize="200,51">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FlowStep_4">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">750,384.5</av:Point>
-            <av:Size x:Key="ShapeSize">200,51</av:Size>
+            <av:PointCollection x:Key="ConnectorLocation">110,295.5 110,344.5</av:PointCollection>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
@@ -667,57 +781,6 @@
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <av:Point x:Key="ShapeLocation">180,144.5</av:Point>
-            <av:Size x:Key="ShapeSize">200,51</av:Size>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TypeInto_1" sap:VirtualizedContainerService.HintSize="314,134" />
-      <sap2010:ViewStateData Id="TypeInto_3" sap:VirtualizedContainerService.HintSize="314,134" />
-      <sap2010:ViewStateData Id="Click_10" sap:VirtualizedContainerService.HintSize="314,106" />
-      <sap2010:ViewStateData Id="Sequence_57" sap:VirtualizedContainerService.HintSize="336,578">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="BrowserScope_16" sap:VirtualizedContainerService.HintSize="414,724" />
-      <sap2010:ViewStateData Id="Sequence_56" sap:VirtualizedContainerService.HintSize="200,51">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FlowStep_11">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">340,614.5</av:Point>
-            <av:Size x:Key="ShapeSize">200,51</av:Size>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="TypeInto_2" sap:VirtualizedContainerService.HintSize="314,134" />
-      <sap2010:ViewStateData Id="Click_9" sap:VirtualizedContainerService.HintSize="314,106" />
-      <sap2010:ViewStateData Id="Sequence_58" sap:VirtualizedContainerService.HintSize="336,404">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="BrowserScope_17" sap:VirtualizedContainerService.HintSize="414,550" />
-      <sap2010:ViewStateData Id="Sequence_59" sap:VirtualizedContainerService.HintSize="200,51">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-          </scg:Dictionary>
-        </sap:WorkflowViewStateService.ViewState>
-      </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="FlowStep_12">
-        <sap:WorkflowViewStateService.ViewState>
-          <scg:Dictionary x:TypeArguments="x:String, x:Object">
-            <av:Point x:Key="ShapeLocation">340,714.5</av:Point>
             <av:Size x:Key="ShapeSize">200,51</av:Size>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
@@ -756,26 +819,81 @@
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">True</x:Boolean>
-            <av:Point x:Key="ShapeLocation">105,426.5</av:Point>
+            <av:Point x:Key="ShapeLocation">15,426.5</av:Point>
             <av:Size x:Key="ShapeSize">70,87</av:Size>
-            <av:PointCollection x:Key="TrueConnector">105,470 90,470 90,539 120,539 120,569</av:PointCollection>
-            <av:PointCollection x:Key="FalseConnector">175,470 205,470 205,539 120,539 120,569</av:PointCollection>
+            <av:PointCollection x:Key="TrueConnector">15,470 0,470 0,539 120,539 120,569</av:PointCollection>
+            <av:PointCollection x:Key="FalseConnector">85,470 120,470 120,569</av:PointCollection>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Flowchart_1" sap:VirtualizedContainerService.HintSize="966,860">
+      <sap2010:ViewStateData Id="Assign_34" sap:VirtualizedContainerService.HintSize="242,60">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_18">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">558.895,190</av:Point>
+            <av:Size x:Key="ShapeSize">242,60</av:Size>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Click_9" sap:VirtualizedContainerService.HintSize="200,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_20">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">380,84.5</av:Point>
+            <av:Size x:Key="ShapeSize">200,51</av:Size>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_2" sap:VirtualizedContainerService.HintSize="314,87" />
+      <sap2010:ViewStateData Id="BrowserScope_16" sap:VirtualizedContainerService.HintSize="200,51">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="FlowStep_21">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">330,214.5</av:Point>
+            <av:Size x:Key="ShapeSize">200,51</av:Size>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="InvokeWorkflowFile_3" sap:VirtualizedContainerService.HintSize="200,51" />
+      <sap2010:ViewStateData Id="FlowStep_23">
+        <sap:WorkflowViewStateService.ViewState>
+          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+            <av:Point x:Key="ShapeLocation">690,314.5</av:Point>
+            <av:Size x:Key="ShapeSize">200,51</av:Size>
+          </scg:Dictionary>
+        </sap:WorkflowViewStateService.ViewState>
+      </sap2010:ViewStateData>
+      <sap2010:ViewStateData Id="Flowchart_1" sap:VirtualizedContainerService.HintSize="985,932">
         <sap:WorkflowViewStateService.ViewState>
           <scg:Dictionary x:TypeArguments="x:String, x:Object">
             <x:Boolean x:Key="IsExpanded">False</x:Boolean>
             <av:Point x:Key="ShapeLocation">250,2.5</av:Point>
             <av:Size x:Key="ShapeSize">60,75</av:Size>
             <av:PointCollection x:Key="ConnectorLocation">280,77.5 280,107.5 160,107.5 160,214.5 240,214.5 240,270 210,270</av:PointCollection>
-            <x:Double x:Key="Width">952.5</x:Double>
-            <x:Double x:Key="Height">824.5</x:Double>
+            <x:Double x:Key="Width">971</x:Double>
+            <x:Double x:Key="Height">895.5</x:Double>
           </scg:Dictionary>
         </sap:WorkflowViewStateService.ViewState>
       </sap2010:ViewStateData>
-      <sap2010:ViewStateData Id="Main_1" sap:VirtualizedContainerService.HintSize="1006,940" />
+      <sap2010:ViewStateData Id="Main_1" sap:VirtualizedContainerService.HintSize="1025,996" />
     </sap2010:ViewStateManager>
   </sap2010:WorkflowViewState.ViewStateManager>
 </Activity>
